@@ -1,11 +1,11 @@
 // src/services/config.js
 
-export const Base_URI = "http://localhost:3006";
-// export const Base_URI = "https://backend.thetrippingtales.com";
+// export const Base_URI = "http://localhost:3006";
+export const Base_URI = "http://eduguru.biz:3006";
 
 export const config = {
-    imageurl:'http://localhost:3006',
-    // imageurl:'https://backend.thetrippingtales.com',
+    // imageurl:'http://localhost:3006',
+    imageurl:'http://eduguru.biz:3006',
     GetSections: `${Base_URI}/admin/getSection`,
     GetBanner: `${Base_URI}/admin/getBanner`,
     UpdateWhatWeAre: `${Base_URI}/admin/saveSection`,
