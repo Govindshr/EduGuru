@@ -1599,3 +1599,90 @@ li {
     }
   }
   
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #f4f6f8;
+  }
+  
+  .login-box {
+    background: white;
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  }
+  
+  .login-title {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    color: #333;
+  }
+  
+  .login-error {
+    color: red;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  .login-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .login-label {
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+    margin-top: 1rem;
+  }
+  
+
+  .login-password-wrapper {
+    position: relative;
+    width: 100%;
+  }
+  
+  .login-input {
+    width: 100%;
+    padding: 0.5rem 2.5rem 0.5rem 0.75rem; /* room for the eye icon */
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: #eef3ff;
+  }
+  
+  .login-toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+    font-size: 1.2rem;
+  }
+   
+
+  
+  .login-button {
+    margin-top: 1.5rem;
+    background: #007bff;
+    border: none;
+    padding: 0.75rem;
+    color: white;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  
+  .login-button:hover {
+    background: #0056b3;
+  }
+  

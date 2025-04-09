@@ -33,7 +33,7 @@ function MarketingSection({ onCategorySelect, selectedCategoryData }) {
   }, []);
 
   useEffect(() => {
-    if (!selectedCategoryData?.data?.heading || !headingRef.current) return;
+    if (!selectedCategoryData?.data[0]?.heading || !headingRef.current) return;
   
     const element = headingRef.current;
     const split = new SplitType(element, { types: "words, chars" });
@@ -83,18 +83,18 @@ console.log(selectedCategoryData)
               <h2
                 ref={headingRef}
                 className="mw-100 mb-4 split-text"
-                key={selectedCategoryData?.data?.heading}
+                key={selectedCategoryData?.data[0]?.heading}
               >
-                {selectedCategoryData?.data?.heading}
+                {selectedCategoryData?.data[0]?.heading}
               </h2>
 
               <figure>
                 <img
-                  src={`${config.imageurl}/${selectedCategoryData?.data?.image}`}
+                  src={`${config.imageurl}/${selectedCategoryData?.data[0]?.image}`}
                   alt="Branding Portfolio"
                 />
               </figure>
-              <p>{selectedCategoryData?.data?.description}</p>
+              <p>{selectedCategoryData?.data[0]?.description}</p>
             </div>
           </div>
 

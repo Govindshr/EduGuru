@@ -13,7 +13,7 @@ const ViewPageContent = () => {
     const fetchContent = async () => {
       try {
         const res = await axios.post(config.GetPageContentById, { id });
-        setPageContent(res.data?.data);
+        setPageContent(res.data?.data[0]);
       } catch (err) {
         console.error("Error fetching page content:", err);
       }

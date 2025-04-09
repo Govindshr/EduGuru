@@ -1,9 +1,13 @@
 // src/App.jsx
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
+
+// Public Pages
 import LandingPage from "./pages/LandingPage";
 import DetailsPage from "./pages/DetailsPage";
+import AdminLogin from "./pages/AdminLogin";
 
+// Admin Pages
 import AdminLayout from "./admin/layout/AdminLayout";
 import MainBanner from "./admin/pages/MainBanner";
 import DesignSolution from "./admin/pages/DesignSolution";
@@ -22,17 +26,31 @@ import Categories from "./admin/pages/Categories";
 import PageContent from "./admin/pages/PageContent";
 import AllPageContents from "./admin/pages/AllPageContents";
 import ViewPageContent from "./admin/pages/ViewPageContent";
+
+// Route Protection
+
+import PrivateRoute from "./admin/components/PrivateRoutes";
+
 function App() {
   return (
     <Router>
       <Routes>
+        {/* Public Routes */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/details-page" element={<DetailsPage />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
 
-        {/* Admin Routes */}
-        <Route path="/admin" element={<AdminLayout />}>
+        {/* Protected Admin Routes */}
+        <Route
+          path="/admin"
+          element={
+            <PrivateRoute>
+              <AdminLayout />
+            </PrivateRoute>
+          }
+        >
           <Route path="main-banner" element={<MainBanner />} />
-          <Route path="who-we-are" element={<CorporateForm/>} />
+          <Route path="who-we-are" element={<CorporateForm />} />
           <Route path="design-solution" element={<DesignSolution />} />
           <Route path="skills-section" element={<SkillsSection />} />
           <Route path="our-team" element={<OurTeam />} />
