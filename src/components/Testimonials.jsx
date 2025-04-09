@@ -1,6 +1,7 @@
 import React, { useState, useEffect ,useRef} from "react";
 import axios from "axios";
 import { config } from "../admin/services/config";
+import StarRating from "../admin/components/StarRating";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import SplitType from "split-type";
@@ -88,7 +89,8 @@ function Testimonials() {
               <div className="testimonialContnt">
                 <div className="testimonialTxt">
                   <span className="starrating">
-                    <img src="/images/star.svg" alt="rating" width="100" />
+                    {/* <img src="/images/star.svg" alt="rating" width="100" /> */}
+                    <StarRating value={item.rating} />
                   </span>
                   <p>"{item.note}"</p>
                   <div className="userName">

@@ -130,13 +130,13 @@ const SkillsSection = () => {
                   onChange={(e) => handleDetailChange(idx, e)}
                 />
               </label>
-              <label>Rating Value
+              <label>Rating Percentage
                 <input
                   type="number"
                   name="rating_value"
                   value={detail.rating_value}
-                  min="1"
-                  max="5"
+                  min="0"
+                  max="100"
                   onChange={(e) => handleDetailChange(idx, e)}
                 />
               </label>

@@ -1685,4 +1685,10 @@ li {
   .login-button:hover {
     background: #0056b3;
   }
+  .starRatingWrapper {
+    display: flex;
+    gap: 4px;
+    color: #21b573; /* green tint */
+    font-size: 15px;
+  }
   

@@ -97,7 +97,9 @@ function Skills() {
                           aria-valuemin="0"
                           aria-valuemax="100"
                         >
-                          <div className="progress-bar" style={{ width: "25%" }}></div>
+                          
+                          <div className="progress-bar" style={{ width: `${skill?.rating_value}%` }}></div>
+
                         </div>
                       </div>
                     </div>
