@@ -32,7 +32,7 @@ const SkillsSection = () => {
             heading: data.heading || "",
             description: data.description || "",
             details: data.details || [],
-            image_preview: data.image ? `${config.imageurl}/${data.cover_image.replace(/\\/g, "/")}` : "",
+            image_preview: data.cover_image ? `${config.imageurl}/${data.cover_image.replace(/\\/g, "/")}` : "",
           }));
         }
       } catch (err) {
