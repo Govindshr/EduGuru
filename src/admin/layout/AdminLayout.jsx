@@ -35,7 +35,8 @@ const AdminLayout = () => {
           <div className={styles.menuGroup}>Details Page </div>
           <ul>
             <NavLink to="details-banner" className={({ isActive }) => (isActive ? styles.active : "")}><li>Details Page-Banner</li></NavLink>
-            {/* <NavLink to="categories" className={({ isActive }) => (isActive ? styles.active : "")}><li>Categories</li></NavLink> */}
+            <NavLink to="services-list" className={({ isActive }) => (isActive ? styles.active : "")}><li>Services List</li></NavLink>
+            <NavLink to="add-services" className={({ isActive }) => (isActive ? styles.active : "")}><li>Add Services</li></NavLink>
             <NavLink to="page-content-list" className={({ isActive }) => (isActive ? styles.active : "")}><li>Categories</li></NavLink>
             <NavLink to="page-content-add" className={({ isActive }) => (isActive ? styles.active : "")}><li>Add Categories</li></NavLink>
           </ul>

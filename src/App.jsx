@@ -26,6 +26,8 @@ import Categories from "./admin/pages/Categories";
 import PageContent from "./admin/pages/PageContent";
 import AllPageContents from "./admin/pages/AllPageContents";
 import ViewPageContent from "./admin/pages/ViewPageContent";
+import AddServices from "./admin/pages/AddServices";
+import ShowServices from "./admin/pages/AllServices";
 
 // Route Protection
 
@@ -65,6 +67,8 @@ function App() {
           <Route path="page-content-add" element={<PageContent />} />
           <Route path="page-content-list" element={<AllPageContents />} />
           <Route path="view-page-content/:id" element={<ViewPageContent />} />
+          <Route path="add-services" element={<AddServices />} />
+          <Route path="services-list" element={<ShowServices />} />
         </Route>
       </Routes>
     </Router>

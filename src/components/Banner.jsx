@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { config } from "../admin/services/config";
 
-function Banner({ onContactClick }) {
+function Banner({ onContactClick , onDesignClick }) {
  const [formData, setFormData] = useState()
   useEffect(() => {
     const fetchSection = async () => {
@@ -40,11 +40,11 @@ function Banner({ onContactClick }) {
             </div>
   
             <div className="bannerimg">
-              <figure className="mb-0 d-inline-block position-relative">
+              <figure className="mb-0 d-inline-block position-relative" style={{cursor:'pointer'}}>
                 {/* <img src="/images/portrait-man.png" alt="Banner" width="340" /> */}
                 <img src={`${config.imageurl}/${formData?.profile_image}`} alt="Banner" width="340" />
                 
-                <a onClick={onContactClick} className="buttonIcon">
+                <a onClick={onDesignClick} className="buttonIcon">
                   <img src="/images/arrow-white.svg" alt="" />
                 </a>
               </figure>

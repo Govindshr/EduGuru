@@ -96,9 +96,9 @@ const MainBanner = () => {
         <label>Subheading
           <input type="text" name="subheading" value={formData.subheading} onChange={handleChange} />
         </label>
-        <label>Button Route
+        {/* <label>Button Route
           <input type="text" name="buttonRoute" value={formData.buttonRoute} onChange={handleChange} />
-        </label>
+        </label> */}
         <label>Button Label
           <input type="text" name="buttonLabel" value={formData.buttonLabel} onChange={handleChange} />
         </label>

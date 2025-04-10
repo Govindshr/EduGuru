@@ -14,17 +14,23 @@ import Footer from '../components/Footer';
 
 function LandingPage() {
   const footerRef = useRef(null);
+  const whatweareref = useRef(null)
 
   const scrollToFooter = () => {
     footerRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const scrollToDesignSolutions = () => {
+    whatweareref.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+
   return (
     <>
       <Header />
-      <Banner onContactClick={scrollToFooter} />
+      <Banner onContactClick={scrollToFooter} onDesignClick ={scrollToDesignSolutions} />
       <WhoWeAre />
-      <DesignSolution />
+      <DesignSolution ref={whatweareref} />
       <Skills />
       <Team />
       <Portfolio />

@@ -8,7 +8,7 @@ import { config } from "../admin/services/config"; // your existing config file
 
 gsap.registerPlugin(ScrollTrigger);
 
-function DesignSolution() {
+function DesignSolution( {ref}) {
   const navigate = useNavigate();
   const [formData, setFormData] = useState(null);
   const headingRef = useRef(null);
@@ -65,7 +65,7 @@ function DesignSolution() {
   
   
   return (
-    <section className="designSolution">
+    <section className="designSolution" ref={ref}>
       <div className="container">
         <div className="section-heading">
           <span>{formData?.title}</span>

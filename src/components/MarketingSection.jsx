@@ -12,6 +12,7 @@ function MarketingSection({ onCategorySelect, selectedCategoryData }) {
   const [categories, setCategories] = useState([]);
   const [activeCategoryId, setActiveCategoryId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [filterdData ,setFilterdData] = useState([])
 
   const fetchCategories = async (search = "", autoSelectFirst = false) => {
     try {
@@ -31,9 +32,35 @@ function MarketingSection({ onCategorySelect, selectedCategoryData }) {
     }
   };
 
+  const fetchContent = async () => {
+    try {
+      const res = await axios.post(config.GetSections, {
+        section_name: "what_we_are",
+      });
+  
+      const allDetails = res.data?.data?.details || [];
+  
+      const targetServiceId = id; // Example service ID
+  
+      const filteredDetails = allDetails.filter(
+        (item) => item.service_id === targetServiceId
+      );
+  
+      console.log("Filtered Details:", filteredDetails);
+      setFilterdData(filteredDetails)
+    } catch (err) {
+      console.error("Error fetching section:", err);
+    }
+  };
+  
   useEffect(() => {
     fetchCategories("", true); // ✅ only auto-select on mount
+    fetchContent()
   }, []);
+
+ 
+  
+  
 
   useEffect(() => {
     if (!selectedCategoryData?.data[0]?.heading || !headingRef.current) return;
@@ -88,7 +115,7 @@ console.log(selectedCategoryData)
                 className="mw-100 mb-4 split-text"
                 key={selectedCategoryData?.data[0]?.heading}
               >
-                {selectedCategoryData?.data[0]?.heading}
+                {filterdData[0]?.heading}
               </h2>
 
               <figure>
