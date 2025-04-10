@@ -37,7 +37,7 @@ function App() {
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<LandingPage />} />
-        <Route path="/details-page" element={<DetailsPage />} />
+        <Route path="/details-page/:id" element={<DetailsPage />} />
         <Route path="/admin-login" element={<AdminLogin />} />
 
         {/* Protected Admin Routes */}

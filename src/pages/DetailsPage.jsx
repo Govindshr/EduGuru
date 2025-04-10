@@ -12,13 +12,14 @@ import { useLocation } from "react-router-dom";
 
 
 function DetailsPage() {
+   
   const location = useLocation();
   const [selectedCategoryData, setSelectedCategoryData] = useState(null);
 
   const handleCategorySelect = async (categoryId) => {
    console.log(categoryId)
     try {
-      const response = await axios.post(config.GetPageContentByCategory, { category_id: categoryId });
+      const response = await axios.post(config.GetPageContentById, { id: categoryId });
       console.log("Data from selected category:", response.data);
       setSelectedCategoryData(response.data);
     } catch (error) {

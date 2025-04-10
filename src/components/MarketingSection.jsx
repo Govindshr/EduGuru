@@ -4,8 +4,10 @@ import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import SplitType from "split-type";
 import { config } from "../admin/services/config";
+import { useParams } from "react-router-dom";
 
 function MarketingSection({ onCategorySelect, selectedCategoryData }) {
+  const { id } = useParams();
   const headingRef = useRef(null);
   const [categories, setCategories] = useState([]);
   const [activeCategoryId, setActiveCategoryId] = useState(null);
@@ -13,9 +15,10 @@ function MarketingSection({ onCategorySelect, selectedCategoryData }) {
 
   const fetchCategories = async (search = "", autoSelectFirst = false) => {
     try {
-      const res = await axios.post(config.GetAllCategories, { name: search });
-      const fetched = res.data?.data || [];
+      const res = await axios.post(config.GetAllPageContents, {  heading: search,category_id: id } );
+      const fetched = res.data?.data;
       setCategories(fetched);
+      console.log("main id ", fetched)
 
       // ✅ Only auto-select first category if flag is true
       if (fetched.length && autoSelectFirst) {
@@ -71,7 +74,7 @@ function MarketingSection({ onCategorySelect, selectedCategoryData }) {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    fetchCategories(searchTerm, false); // ❌ don’t auto-select again
+    fetchCategories(searchTerm, false); 
   };
 console.log(selectedCategoryData)
   return (
@@ -109,7 +112,7 @@ console.log(selectedCategoryData)
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <a onClick={handleSearch}>
+                <a style={{cursor:'pointer'}} onClick={handleSearch}>
                   <img src="images/search-icon.svg" alt="Search" width="20" />
                 </a>
               </form>
@@ -125,7 +128,7 @@ console.log(selectedCategoryData)
                       }
                       onClick={(e) => handleClick(e, category)}
                     >
-                      {category?.name}
+                      {category?.heading}
                       <figure>
                         <img
                           src="images/arrow-normal-icon.svg"

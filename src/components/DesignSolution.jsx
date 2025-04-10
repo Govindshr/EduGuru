@@ -78,7 +78,7 @@ function DesignSolution() {
           <div className="row">
             {formData?.details.map((item, index) => (
               <div className="col-md-4 mb-4 px-md-3" key={index}>
-                <div className="solutionTxt" onClick={() => navigate('/details-page')} style={{cursor:'pointer'}}>
+                <div className="solutionTxt" onClick={() => navigate(`/details-page/${item?.service_id}`)} style={{cursor:'pointer'}}>
                   <figure>
                     <img src={`${config.imageurl}/${item.image}`} alt="" />
                     <i className="topIcon">

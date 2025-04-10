@@ -331,6 +331,21 @@
   cursor: pointer;
 }
 
+/* Add this to src/styles/Admin.module.css */
+.selectDropdown {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s ease;
+  margin-left: 10px;
+}
+
+.selectDropdown:focus {
+  border-color: #3085d6;
+}
 
 
 

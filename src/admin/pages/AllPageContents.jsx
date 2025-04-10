@@ -10,16 +10,43 @@ import { useNavigate } from "react-router-dom";
 const AllPageContents = () => {
   const navigate = useNavigate();
   const [allpagecontents, setAllPageContents] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [services ,setServices] = useState([])
+  const [selectedCategory, setSelectedCategory] = useState("");
 
-  const fetchData = async () => {
+  const fetchData = async (category = "") => {
     try {
-      const res = await axios.post(config.GetAllPageContents);
+      const res = await axios.post(config.GetAllPageContents, {
+        category_id: category,
+      });
       const data = res.data?.data || [];
       setAllPageContents(data);
     } catch (error) {
       console.error("Error fetching queries:", error);
     }
   };
+  const fetchServices = async () => {
+    try {
+      const res = await axios.post(config.GetSections, {
+        section_name: "what_we_are",
+      });
+    
+      setServices(res.data?.data);
+    } catch (err) {
+      console.error("Error fetching section:", err);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const res = await axios.get(config.GetAllCategories);
+      const data = res.data?.data || [];
+      setCategories(data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
   const handleDeletePartner = async (partner_id) => {
     const confirm = await Swal.fire({
       title: "Are you sure?",
@@ -37,7 +64,7 @@ const AllPageContents = () => {
           id: partner_id,
         });
         Swal.fire("Deleted!", res.data.message, "success");
-        fetchData();
+        fetchData(selectedCategory);
       } catch (error) {
         console.error("Error deleting partner:", error);
         Swal.fire("Error", "Failed to delete partner", "error");
@@ -46,26 +73,47 @@ const AllPageContents = () => {
   };
 
   useEffect(() => {
+    fetchCategories();
+    fetchServices()
     fetchData();
   }, []);
 
+  const handleCategoryChange = (e) => {
+    const selected = e.target.value;
+    setSelectedCategory(selected);
+    fetchData(selected);
+  };
+
   return (
     <div className={styles.formWrapper}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <h2>All Data</h2>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <h2>All Categories</h2>
         <button
           className={styles.addBtn}
           onClick={() => navigate("/admin/page-content-add")}
         >
-          + Add Data
+          + Add 
         </button>
       </div>
+
+      <div style={{ margin: "15px 0" }}>
+        <label htmlFor="categoryFilter">Filter by Services: </label>
+        <select
+  id="categoryFilter"
+  value={selectedCategory}
+  onChange={handleCategoryChange}
+  className={styles.selectDropdown}
+>
+
+          <option value="">All</option>
+          {services?.details?.map((cat) => (
+            <option key={cat.service_id} value={cat.service_id}>
+              {cat.heading}
+            </option>
+          ))}
+        </select>
+      </div>
+
       <table className={styles.table}>
         <thead>
           <tr>
@@ -81,9 +129,7 @@ const AllPageContents = () => {
             <tr key={index}>
               <td>{query.heading}</td>
               <td>{query.description}</td>
-              <td>
-                {query?.category_name ? query?.category_name : "N/A"}
-              </td>
+              <td>{query?.category_name ? query?.category_name : "N/A"}</td>
               <td>
                 <img
                   src={`${config.imageurl}/${query.image}`}
@@ -93,21 +139,19 @@ const AllPageContents = () => {
               </td>
               <td>
                 <div className="d-flex">
-                <a
-                  className={styles.iconBtn}
-                  style={{ cursor: "pointer" }}
-                  onClick={() =>
-                    navigate(`/admin/view-page-content/${query._id}`)
-                  }
-                >
-                  <Eye size={18} />
-                </a>
-                <a
-                  onClick={() => handleDeletePartner(query._id)}
-                  style={{ cursor: "pointer", marginLeft: "5px" }}
-                >
-                  <Trash2 size={18} />
-                </a>
+                  <a
+                    className={styles.iconBtn}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => navigate(`/admin/view-page-content/${query._id}`)}
+                  >
+                    <Eye size={18} />
+                  </a>
+                  <a
+                    onClick={() => handleDeletePartner(query._id)}
+                    style={{ cursor: "pointer", marginLeft: "5px" }}
+                  >
+                    <Trash2 size={18} />
+                  </a>
                 </div>
               </td>
             </tr>

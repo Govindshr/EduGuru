@@ -49,6 +49,16 @@ const DesignSolution = () => {
     fetchData();
   }, []);
 
+  const generateObjectId = () => {
+    return (
+      Math.floor(Date.now() / 1000).toString(16) +
+      'xxxxxxxxxxxxxxxx'
+        .replace(/[x]/g, () => ((Math.random() * 16) | 0).toString(16))
+        .toLowerCase()
+    );
+  };
+  
+
   const handleFieldChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -92,8 +102,13 @@ const DesignSolution = () => {
     formPayload.append("button_label", formData.button_label);
     formPayload.append("button_route", formData.button_route);
 
-    const detailMeta = formData.details.map(({ icon, image, icon_preview, image_preview, ...rest }) => rest);
+    const detailMeta = formData.details.map(({ icon, image, icon_preview, image_preview, ...rest }) => ({
+      ...rest,
+      service_id: generateObjectId(), // <- append unique ID
+    }));
+    
     formPayload.append("details", JSON.stringify(detailMeta));
+    
 
     formData.details.forEach((d) => {
       if (d.icon) formPayload.append("details_icon", d.icon);
@@ -128,7 +143,7 @@ const DesignSolution = () => {
           <input type="text" name="button_route" value={formData.button_route} onChange={handleFieldChange} />
         </label>
         <div className={styles.fullWidth}>
-          <h3>Details</h3>
+          <h3>Services</h3>
           {formData.details.map((detail, idx) => (
             <div key={idx} className={styles.cardBoxSmall}>
               <label>Heading

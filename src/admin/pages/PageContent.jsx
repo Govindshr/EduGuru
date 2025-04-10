@@ -25,18 +25,18 @@ const PageContent = () => {
   });
 
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchData = async () => {
       try {
-        const res = await axios.post(config.GetAllCategories);
-        setCategories(res.data?.data || []);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
+        const res = await axios.post(config.GetSections, {
+          section_name: "what_we_are",
+        });
+        
+        setCategories(res.data?.data);
+      } catch (err) {
+        console.error("Error fetching section:", err);
       }
     };
-
-
-    fetchCategories();
-   
+    fetchData();
   }, []);
 
   const handleChange = (e) => {
@@ -95,20 +95,21 @@ const PageContent = () => {
   return (
     <div className={styles.formWrapper}>
        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <h2>Add Data</h2>
+              <h2>Add Category Data</h2>
                <button className={styles.addBtn} onClick={() => navigate('/admin/page-content-list')} >Back</button>
             </div>
      
       <form onSubmit={handleSubmit} className={styles.formGrid2Col} encType="multipart/form-data">
-        <label>Category
+        <label>Service
           <select name="category_id" className="form-control" value={formData.category_id} onChange={handleChange}>
-            <option value="">Select Category</option>
-            {categories.map((cat) => (
-              <option key={cat._id} value={cat._id}>{cat.name}</option>
+            <option value="">Select Service</option>
+            {console.log("categories",categories)}
+            {categories?.details?.map((cat) => (
+              <option key={cat.service_id} value={cat?.service_id}>{cat?.heading}</option>
             ))}
           </select>
         </label>
-        <label>Heading
+        <label>Name
           <input type="text" name="heading" value={formData.heading} onChange={handleChange} />
         </label>
         <label className={styles.fullWidth}>Description
@@ -120,21 +121,21 @@ const PageContent = () => {
             <img src={formData.image_preview} alt="preview" className={styles.inlinePreviewLarge} />
           )}
         </label>
-        <label>Area Heading
+        <label>Area Of Function Heading
           <input type="text" name="area_heading" value={formData.area_heading} onChange={handleChange} />
         </label>
-        <label>Area Description
+        <label>Area Of Function Description
           <textarea name="area_description" value={formData.area_description} onChange={handleChange} />
         </label>
-        <label>Area Text
+        <label>Area Of Function Right Top Text
           <input type="text" name="area_text" value={formData.area_text} onChange={handleChange} />
         </label>
         <label>Area Button
           <input type="text" name="area_button" value={formData.area_button} onChange={handleChange} />
         </label>
-        <label>Area Route
+        {/* <label>Area Route
           <input type="text" name="area_route" value={formData.area_route} onChange={handleChange} />
-        </label>
+        </label> */}
         <label className={styles.fullWidth}>Area Images
           <input type="file" multiple onChange={handleAreaImagesChange} />
         </label>

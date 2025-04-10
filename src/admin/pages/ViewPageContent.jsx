@@ -28,7 +28,7 @@ const ViewPageContent = () => {
     <div className={styles.formWrapper}>
       <h2>Page Content Details</h2>
       <div className={styles.cardBoxSmall}>
-        <p><strong>Category:</strong> {pageContent?.category_id?.name}</p>
+        {/* <p><strong>Category:</strong> {pageContent?.category_id?.name}</p> */}
         <p><strong>Heading:</strong> {pageContent.heading}</p>
         <p><strong>Description:</strong> {pageContent.description}</p>
         {pageContent.image && (
