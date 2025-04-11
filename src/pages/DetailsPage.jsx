@@ -9,10 +9,10 @@ import MarketingSection from "../components/MarketingSection";
 import ProcessSection from "../components/ProcessSection";
 import AreaOfFunction from "../components/AreaofFuntion";
 import { useLocation } from "react-router-dom";
-
+import { useRef } from 'react';
 
 function DetailsPage() {
-   
+  const footerRef = useRef(null);
   const location = useLocation();
   const [selectedCategoryData, setSelectedCategoryData] = useState(null);
 
@@ -28,6 +28,9 @@ function DetailsPage() {
   };
 
   
+  const scrollToFooter = () => {
+    footerRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -36,12 +39,12 @@ function DetailsPage() {
 
   return (
     <>
-      <Header2 />
-      <InnerBanner />
+      <Header2 onContactClick={scrollToFooter} />
+      <InnerBanner  />
       <MarketingSection onCategorySelect={handleCategorySelect} selectedCategoryData={selectedCategoryData} />
       <ProcessSection />
       <AreaOfFunction  selectedCategoryData={selectedCategoryData}/>
-      <Footer />
+      <Footer ref={footerRef} />
     </>
   );
 }

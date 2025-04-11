@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-function Header2() {
+function Header2({ onContactClick }) {
   const [isFixed, setIsFixed] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -9,19 +11,21 @@ function Header2() {
     };
 
     window.addEventListener('scroll', handleScroll);
-
-    // Cleanup on unmount
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleLogoClick = () => {
+    navigate('/');
+  };
 
   return (
     <header className={`mainHeader innerHeader ${isFixed ? 'fixed' : ''}`}>
       <nav className="navbar">
         <div className="container d-flex justify-content-between align-items-center">
-          <a className="navbar-brand" href="/">
+          <a className="navbar-brand" style={{ cursor: 'pointer' }} onClick={handleLogoClick}>
             <img src="images/logo-white.svg" alt="EduGuru Logo" width="130" />
           </a>
-          <a href="#" className="btn btn-success">
+          <a onClick={onContactClick} className="btn btn-success">
             Contact Us{' '}
             <i>
               <img src="images/arrow-green.svg" alt="Arrow" width="20" />

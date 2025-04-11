@@ -105,7 +105,7 @@ const DetailsBanner = () => {
           {formData.image_preview && <img src={formData.image_preview} alt="preview" className={styles.inlinePreviewLarge} />}
         </label>
 
-        <div className={styles.fullWidth}>
+        {/* <div className={styles.fullWidth}>
           <h3>Buttons</h3>
           {formData.buttons.map((button, index) => (
             <div key={index} className={styles.cardBoxSmall}>
@@ -131,7 +131,7 @@ const DetailsBanner = () => {
             </div>
           ))}
           <button type="button" onClick={addButton} className={styles.addBtn}>+ Add Button</button>
-        </div>
+        </div> */}
 
         <button type="submit" className={`${styles.submitBtn} ${styles.fullWidth}`}>Submit</button>
       </form>

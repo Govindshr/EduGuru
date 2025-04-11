@@ -1,10 +1,12 @@
 import React, { useState, useEffect ,useRef} from "react";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import SplitType from "split-type";
 import { config } from "../admin/services/config";
 function InnerBanner() {
+   const navigate = useNavigate();
   const [formData, setFormData] = useState();
   const headingRef = useRef(null);
   useEffect(() => {
@@ -71,6 +73,9 @@ function InnerBanner() {
     };
   }, [formData]);
   
+  const handleLogoClick = () => {
+    navigate('/');
+  };
   return (
     <section
       className="innerbanner"
@@ -81,15 +86,12 @@ function InnerBanner() {
           <h1 ref={headingRef} className="split-text">{formData?.title}</h1>
           <div className="breadcrumbDiv">
             <ol className="breadcrumb mb-0">
-              {formData?.buttons?.map((item, index) => (
-                <li key={index} className="breadcrumb-item">
-                  <a href={item?.route || "#"}>{item?.label}</a>
+              
+                <li className="breadcrumb-item">
+                  <a  href="" onClick={handleLogoClick}>Home</a>
                 </li>
-              ))}
+             
 
-              {/* <li className="breadcrumb-item active" aria-current="page">
-                Library
-              </li> */}
             </ol>
           </div>
         </div>
