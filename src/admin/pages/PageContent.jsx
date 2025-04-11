@@ -128,9 +128,9 @@ fetchServices()
         <label>Area Of Function Right Top Text
           <input type="text" name="area_text" value={formData.area_text} onChange={handleChange} />
         </label>
-        <label>Area Button
+        {/* <label>Area Button
           <input type="text" name="area_button" value={formData.area_button} onChange={handleChange} />
-        </label>
+        </label> */}
         {/* <label>Area Route
           <input type="text" name="area_route" value={formData.area_route} onChange={handleChange} />
         </label> */}

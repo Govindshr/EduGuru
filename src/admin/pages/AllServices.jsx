@@ -58,6 +58,7 @@ const ShowServices = () => {
       <table className={styles.table}>
         <thead>
           <tr>
+          <th>S.no.</th>
             <th>Name</th>
             <th>Heading</th>
             <th>Type</th>
@@ -69,6 +70,7 @@ const ShowServices = () => {
         <tbody>
           {services.map((service, index) => (
             <tr key={index}>
+               <td>{index + 1 }</td>
               <td>{service.name}</td>
               <td>{service.heading}</td>
               <td>{service.type || "N/A"}</td>

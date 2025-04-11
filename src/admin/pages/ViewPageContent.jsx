@@ -42,8 +42,6 @@ const ViewPageContent = () => {
         <p><strong>Area Heading:</strong> {pageContent.area_heading}</p>
         <p><strong>Area Description:</strong> {pageContent.area_description}</p>
         <p><strong>Area Text:</strong> {pageContent.area_text}</p>
-        <p><strong>Button Label:</strong> {pageContent.area_button}</p>
-        <p><strong>Button Route:</strong> {pageContent.area_route}</p>
 
         <div>
           <strong>Area Images:</strong>

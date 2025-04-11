@@ -74,10 +74,10 @@ console.log("ye aa rha ahe bhai ",selectedCategoryData)
                 <p>
                 {selectedCategoryData?.data[0]?.area_text}
                 </p>
-                <a href={selectedCategoryData?.data[0]?.area_route} className="btn btn-success px-3 mh-auto">
+                {/* <a href={selectedCategoryData?.data[0]?.area_route} className="btn btn-success px-3 mh-auto">
                 {selectedCategoryData?.data[0]?.area_button}
                   <img className="ms-2" src="images/arrow-white.svg" alt="Arrow" width="20" />
-                </a>
+                </a> */}
                 <figure className="mt-3">
                   <img src={`${config.imageurl}/${selectedCategoryData?.data[0]?.area_images[1]}`} alt="Function 2" />
                 </figure>

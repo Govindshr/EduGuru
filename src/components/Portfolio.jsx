@@ -100,7 +100,7 @@ function Portfolio() {
                     alt={item.name}
                   />
                 </figure>
-                <a href='' className="portfolioTxt">
+                <a className="portfolioTxt" onClick={() => navigate(`/details-page/${item?._id}`)}>
                   <h3>
                     <b>{item.heading}</b> {item.name}
                   </h3>
