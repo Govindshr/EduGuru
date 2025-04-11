@@ -10,6 +10,7 @@ function Portfolio() {
   const navigate = useNavigate();
   const headingRef = useRef(null);
   const [formData, setFormData] = useState();
+  const [services, setServices] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -27,7 +28,19 @@ function Portfolio() {
       }
     };
     fetchData();
+    fetchServices()
   }, []);
+
+  const fetchServices = async () => {
+    try {
+      const res = await axios.post(config.GetAllServices, { type: "portfolio" });
+      const reversedData = (res.data?.data || []).reverse();
+      setServices(reversedData);
+    } catch (error) {
+      console.error("Error fetching services:", error);
+    }
+  };
+  
   useEffect(() => {
     if (!formData?.heading || !headingRef.current) return;
 
@@ -75,21 +88,21 @@ function Portfolio() {
           </h2>
         </div>
         <div className="portfolioList">
-          {formData &&
+          {services &&
             [
-              ...formData.details.filter((_, i) => i % 2 === 0),
-              ...formData.details.filter((_, i) => i % 2 !== 0),
+              ...services?.filter((_, i) => i % 2 === 0),
+              ...services?.filter((_, i) => i % 2 !== 0),
             ].map((item, idx) => (
-              <div className="portfolioContent" key={idx} onClick={() => navigate('/details-page')} style={{cursor:'pointer'}}>
+              <div className="portfolioContent" key={idx} onClick={() => navigate(`/details-page/${item?._id}`)} style={{cursor:'pointer'}}>
                 <figure>
                   <img
                     src={`${config.imageurl}/${item.image}`}
-                    alt={item.title}
+                    alt={item.name}
                   />
                 </figure>
-                <a href={item?.button_link} className="portfolioTxt">
+                <a href='' className="portfolioTxt">
                   <h3>
-                    <b>{item.title}</b> {item.heading}
+                    <b>{item.heading}</b> {item.name}
                   </h3>
                   <span>
                     <img src="/images/arrow-white.svg" alt="Arrow" />

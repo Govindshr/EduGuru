@@ -136,47 +136,8 @@ const DesignSolution = () => {
         <label>Heading
           <input type="text" name="heading" value={formData.heading} onChange={handleFieldChange} />
         </label>
-        <label>Button Label
-          <input type="text" name="button_label" value={formData.button_label} onChange={handleFieldChange} />
-        </label>
-        <label>Button Route
-          <input type="text" name="button_route" value={formData.button_route} onChange={handleFieldChange} />
-        </label>
-        <div className={styles.fullWidth}>
-          <h3>Services</h3>
-          {formData.details.map((detail, idx) => (
-            <div key={idx} className={styles.cardBoxSmall}>
-              <label>Heading
-                <input
-                  type="text"
-                  name="heading"
-                  value={detail.heading}
-                  onChange={(e) => handleDetailChange(idx, e)}
-                />
-              </label>
-              <label>Subheading
-                <input
-                  type="text"
-                  name="subheading"
-                  value={detail.subheading || ""}
-                  onChange={(e) => handleDetailChange(idx, e)}
-                />
-              </label>
-              <label>Icon
-                <input type="file" onChange={(e) => handleFileChange(idx, "icon", e)} />
-                {detail.icon_preview && <img src={detail.icon_preview} alt="icon preview" className={styles.inlinePreview} />}
-              </label>
-              <label>Image
-                <input type="file" onChange={(e) => handleFileChange(idx, "image", e)} />
-                {detail.image_preview && <img src={detail.image_preview} alt="image preview" className={styles.inlinePreview} />}
-              </label>
-              <button type="button" onClick={() => removeDetail(idx)} className={styles.iconDeleteBtn}>
-                <Trash2 size={18} />
-              </button>
-            </div>
-          ))}
-          <button type="button" onClick={addDetail} className={styles.addBtn}>+ Add Detail</button>
-        </div>
+       
+      
         <button type="submit" className={`${styles.submitBtn} ${styles.fullWidth}`}>Submit</button>
       </form>
     </div>

@@ -25,18 +25,15 @@ const PageContent = () => {
   });
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchServices = async () => {
       try {
-        const res = await axios.post(config.GetSections, {
-          section_name: "what_we_are",
-        });
-        
-        setCategories(res.data?.data);
-      } catch (err) {
-        console.error("Error fetching section:", err);
+        const res = await axios.post(config.GetAllServices);
+        setCategories(res.data?.data || []);
+      } catch (error) {
+        console.error("Error fetching services:", error);
       }
     };
-    fetchData();
+fetchServices()  
   }, []);
 
   const handleChange = (e) => {
@@ -86,6 +83,7 @@ const PageContent = () => {
         headers: { "Content-Type": "multipart/form-data" },
       });
       alert(res.data.message);
+      navigate("/admin/page-content-list"); // ⬅️ step 3
     } catch (err) {
       console.error("Error saving page content:", err);
       alert("Failed to save page content");
@@ -104,8 +102,8 @@ const PageContent = () => {
           <select name="category_id" className="form-control" value={formData.category_id} onChange={handleChange}>
             <option value="">Select Service</option>
             {console.log("categories",categories)}
-            {categories?.details?.map((cat) => (
-              <option key={cat.service_id} value={cat?.service_id}>{cat?.heading}</option>
+            {categories?.map((cat) => (
+              <option key={cat._id} value={cat?._id}>{cat?.name}</option>
             ))}
           </select>
         </label>

@@ -11,6 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 function DesignSolution( {ref}) {
   const navigate = useNavigate();
   const [formData, setFormData] = useState(null);
+  const [services, setServices] = useState([]);
   const headingRef = useRef(null);
 
   useEffect(() => {
@@ -25,7 +26,19 @@ function DesignSolution( {ref}) {
       }
     };
     fetchData();
+    fetchServices()
   }, []);
+
+
+  const fetchServices = async () => {
+    try {
+      const res = await axios.post(config.GetAllServices,{type: "whatweare"});
+      const reversedData = (res.data?.data || []).reverse();
+      setServices(reversedData);
+    } catch (error) {
+      console.error("Error fetching services:", error);
+    }
+  };
   useEffect(() => {
     if (!formData?.heading || !headingRef.current) return;
   
@@ -76,18 +89,18 @@ function DesignSolution( {ref}) {
         </div>
         <div className="solutionContent">
           <div className="row">
-            {formData?.details.map((item, index) => (
+            {services?.map((item, index) => (
               <div className="col-md-4 mb-4 px-md-3" key={index}>
-                <div className="solutionTxt" onClick={() => navigate(`/details-page/${item?.service_id}`)} style={{cursor:'pointer'}}>
+                <div className="solutionTxt" onClick={() => navigate(`/details-page/${item?._id}`)} style={{cursor:'pointer'}}>
                   <figure>
                     <img src={`${config.imageurl}/${item.image}`} alt="" />
                     <i className="topIcon">
                       <img src={`${config.imageurl}/${item.icon}`} alt="" />
                     </i>
                   </figure>
-                  <h3>{item.title}</h3>
+                  <h3>{item.name}</h3>
                   <a href="">
-                    {item.subheading}
+                    {item.heading}
                     <img src="/images/arrow-gray.svg" alt="" />
                   </a>
                 </div>

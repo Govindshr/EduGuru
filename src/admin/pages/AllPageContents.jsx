@@ -27,15 +27,13 @@ const AllPageContents = () => {
   };
   const fetchServices = async () => {
     try {
-      const res = await axios.post(config.GetSections, {
-        section_name: "what_we_are",
-      });
-    
-      setServices(res.data?.data);
-    } catch (err) {
-      console.error("Error fetching section:", err);
+      const res = await axios.post(config.GetAllServices);
+      setServices(res.data?.data || []);
+    } catch (error) {
+      console.error("Error fetching services:", error);
     }
   };
+
 
   const fetchCategories = async () => {
     try {
@@ -106,9 +104,9 @@ const AllPageContents = () => {
 >
 
           <option value="">All</option>
-          {services?.details?.map((cat) => (
-            <option key={cat.service_id} value={cat.service_id}>
-              {cat.heading}
+          {services?.map((cat) => (
+            <option key={cat._id} value={cat._id}>
+              {cat.name}
             </option>
           ))}
         </select>

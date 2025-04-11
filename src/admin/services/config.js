@@ -25,5 +25,10 @@ export const config = {
     GetAllPageContents: `${Base_URI}/admin/getAllPageContents`,
     GetPageContentById: `${Base_URI}/admin/getPageContentById`,
     GetPageContentByCategory: `${Base_URI}/admin/getPageContentByCategory`,
+    AddServices: `${Base_URI}/admin/createService`,
+    GetAllServices: `${Base_URI}/admin/getAllServices`,
+    GetServicesById: `${Base_URI}/admin/getServiceById`,
+    DeleteService: `${Base_URI}/admin/deleteService`,
+
     
 };

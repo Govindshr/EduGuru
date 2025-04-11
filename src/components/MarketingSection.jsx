@@ -34,20 +34,13 @@ function MarketingSection({ onCategorySelect, selectedCategoryData }) {
 
   const fetchContent = async () => {
     try {
-      const res = await axios.post(config.GetSections, {
-        section_name: "what_we_are",
+      const res = await axios.post(config.GetServicesById, {
+        id: id,
       });
   
-      const allDetails = res.data?.data?.details || [];
-  
-      const targetServiceId = id; // Example service ID
-  
-      const filteredDetails = allDetails.filter(
-        (item) => item.service_id === targetServiceId
-      );
-  
-      console.log("Filtered Details:", filteredDetails);
-      setFilterdData(filteredDetails)
+     
+      console.log("Filtered Details:", res.data?.data);
+      setFilterdData(res.data?.data)
     } catch (err) {
       console.error("Error fetching section:", err);
     }
@@ -115,7 +108,7 @@ console.log(selectedCategoryData)
                 className="mw-100 mb-4 split-text"
                 key={selectedCategoryData?.data[0]?.heading}
               >
-                {filterdData[0]?.heading}
+                {filterdData?.name}
               </h2>
 
               <figure>

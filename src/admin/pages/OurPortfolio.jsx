@@ -109,45 +109,7 @@ const Portfolio = () => {
         <label>Heading
           <input type="text" name="heading" value={formData.heading} onChange={handleFieldChange} />
         </label>
-        <div className={styles.fullWidth}>
-          <h3>Details</h3>
-          {formData.details.map((detail, idx) => (
-            <div key={idx} className={styles.cardBoxSmall}>
-              <label>Title
-                <input
-                  type="text"
-                  name="title"
-                  value={detail.title}
-                  onChange={(e) => handleDetailChange(idx, e)}
-                />
-              </label>
-              <label>Heading
-                <input
-                  type="text"
-                  name="heading"
-                  value={detail.heading}
-                  onChange={(e) => handleDetailChange(idx, e)}
-                />
-              </label>
-              <label>Button Link
-                <input
-                  type="text"
-                  name="button_link"
-                  value={detail.button_link}
-                  onChange={(e) => handleDetailChange(idx, e)}
-                />
-              </label>
-              <label className={styles.fullWidth}>Image
-                <input type="file" accept="image/*" onChange={(e) => handleImageChange(idx, e)} />
-                {detail.image_preview && <img src={detail.image_preview} alt="preview" className={styles.inlinePreviewLarge} />}
-              </label>
-              <button type="button" onClick={() => removeDetail(idx)} className={styles.iconDeleteBtn}>
-                <Trash2 size={18} />
-              </button>
-            </div>
-          ))}
-          <button type="button" onClick={addDetail} className={styles.addBtn}>+ Add Project</button>
-        </div>
+       
         <button type="submit" className={`${styles.submitBtn} ${styles.fullWidth}`}>Submit</button>
       </form>
     </div>

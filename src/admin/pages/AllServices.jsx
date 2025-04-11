@@ -1,6 +1,8 @@
 // src/admin/pages/ShowServices.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
+import { Trash2 } from "lucide-react";
 import { config } from "../services/config";
 import styles from "../styles/Admin.module.css";
 
@@ -9,7 +11,7 @@ const ShowServices = () => {
 
   const fetchServices = async () => {
     try {
-      const res = await axios.get(config.GetAllServices);
+      const res = await axios.post(config.GetAllServices);
       setServices(res.data?.data || []);
     } catch (error) {
       console.error("Error fetching services:", error);
@@ -19,6 +21,33 @@ const ShowServices = () => {
   useEffect(() => {
     fetchServices();
   }, []);
+
+
+
+  const handleDeletePartner = async (partner_id) => {
+    const confirm = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    if (confirm.isConfirmed) {
+      try {
+        const res = await axios.post(config.DeleteService, {
+          id: partner_id,
+        });
+        Swal.fire("Deleted!", res.data.message, "success");
+        fetchServices();
+      } catch (error) {
+        console.error("Error deleting partner:", error);
+        Swal.fire("Error", "Failed to delete partner", "error");
+      }
+    }
+  };
 
   return (
     <div className={styles.formWrapper}>
@@ -31,9 +60,10 @@ const ShowServices = () => {
           <tr>
             <th>Name</th>
             <th>Heading</th>
-            <th>Subhead</th>
+            <th>Type</th>
             <th>Icon</th>
             <th>Image</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -41,16 +71,27 @@ const ShowServices = () => {
             <tr key={index}>
               <td>{service.name}</td>
               <td>{service.heading}</td>
-              <td>{service.subhead || "N/A"}</td>
+              <td>{service.type || "N/A"}</td>
               <td>
-                {service.icon && (
-                  <img src={`${config.imageurl}/${service.icon}`} width={40} height={40} alt="icon" />
-                )}
-              </td>
+  {service.icon ? (
+    <img src={`${config.imageurl}/${service.icon}`} width={40} height={40} alt="icon" />
+  ) : (
+    service.type === "whatweare" ? "-" : null
+  )}
+</td>
+
               <td>
                 {service.image && (
                   <img src={`${config.imageurl}/${service.image}`} width={60} height={60} alt="image" />
                 )}
+              </td>
+              <td>
+              <a
+                    onClick={() => handleDeletePartner(service._id)}
+                    style={{ cursor: "pointer", marginLeft: "5px" }}
+                  >
+                    <Trash2 size={18} />
+                  </a>
               </td>
             </tr>
           ))}
