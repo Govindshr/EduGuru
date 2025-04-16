@@ -32,6 +32,12 @@ const Footer = forwardRef((props, ref) => {
             title: data.title || "",
             heading: data.heading || "",
             description: data.description || "",
+            email: data.email || "",
+            mobile_number: data.mobile_number || "",
+            fb_link: data.fb_link || "",
+            insta_link: data.insta_link || "",
+            twitter_link: data.twitter_link || "",
+            linkedin_link: data.linkedin_link || "",
             image: null,
             image_preview: data.image ? `${config.imageurl}/${data.image.replace(/\\/g, '/')}` : ""
           }));
@@ -155,7 +161,7 @@ const Footer = forwardRef((props, ref) => {
                     <div className="col-md-12">
                       <div className="StartCouncilGroup">
                         <button type="button" className="startBtn" onClick={handleSubmit}>
-                          Start Council
+                          Start Consulting
                         </button>
                         
                       </div>
@@ -190,18 +196,18 @@ const Footer = forwardRef((props, ref) => {
                 <img src="/images/logo-white.svg" alt="" width="100" />
               </figure>
               <p>
-                <img src="/images/email.svg" alt="" width="15" className="me-2" /> text@eduguru.com
+                <img src="/images/email.svg" alt="" width="15" className="me-2" /> {formData.email}
               </p>
               <p>
-                <img src="/images/call.svg" alt="" width="15" className="me-2" /> 0141-123-4567
+                <img src="/images/call.svg" alt="" width="15" className="me-2" /> {formData.mobile_number}
               </p>
             </div>
             <div className="col-md-6">
               <div className="footerSocila">
-                <a href=""><img src="/images/facebook-icon.svg" alt="" /></a>
-                <a href=""><img src="/images/instagram-icon.svg" alt="" /></a>
-                <a href=""><img src="/images/twitter-white.svg" alt="" /></a>
-                <a href=""><img src="/images/linkedin-white.svg" alt="" /></a>
+                <a href={formData.fb_link}><img src="/images/facebook-icon.svg" alt="" /></a>
+                <a href={formData.insta_link}><img src="/images/instagram-icon.svg" alt="" /></a>
+                <a href={formData.twitter_link}><img src="/images/twitter-white.svg" alt="" /></a>
+                <a href={formData.linkedin_link}><img src="/images/linkedin-white.svg" alt="" /></a>
               </div>
             </div>
           </div>

@@ -2,11 +2,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { Trash2 } from "lucide-react";
+import { Trash2 ,PenSquare} from "lucide-react";
 import { config } from "../services/config";
+import { useNavigate } from "react-router-dom";
 import styles from "../styles/Admin.module.css";
 
 const ShowServices = () => {
+    const navigate = useNavigate();
   const [services, setServices] = useState([]);
 
   const fetchServices = async () => {
@@ -89,11 +91,18 @@ const ShowServices = () => {
               </td>
               <td>
               <a
+                     onClick={() => navigate(`/admin/edit-service/${service._id}`)}
+                    style={{ cursor: "pointer", marginLeft: "5px" }}
+                  >
+                    <PenSquare size={18} />
+                  </a>
+              <a
                     onClick={() => handleDeletePartner(service._id)}
                     style={{ cursor: "pointer", marginLeft: "5px" }}
                   >
                     <Trash2 size={18} />
                   </a>
+                 
               </td>
             </tr>
           ))}

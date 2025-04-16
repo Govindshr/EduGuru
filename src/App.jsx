@@ -32,6 +32,8 @@ import ShowServices from "./admin/pages/AllServices";
 // Route Protection
 
 import PrivateRoute from "./admin/components/PrivateRoutes";
+import EditService from "./admin/pages/EditService";
+import EditPageContent from "./admin/pages/EditPagecontent";
 
 function App() {
   return (
@@ -69,6 +71,8 @@ function App() {
           <Route path="view-page-content/:id" element={<ViewPageContent />} />
           <Route path="add-services" element={<AddServices />} />
           <Route path="services-list" element={<ShowServices />} />
+          <Route path="edit-service/:id" element={<EditService />} />
+          <Route path="edit-category/:id" element={<EditPageContent />} />
         </Route>
       </Routes>
     </Router>

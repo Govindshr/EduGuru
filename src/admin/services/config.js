@@ -1,10 +1,11 @@
+import EditService from "../pages/EditService";
 
-// export const Base_URI = "http://localhost:3006";
-export const Base_URI = "http://eduguru.biz:3006";
+export const Base_URI = "http://localhost:3006";
+// export const Base_URI = "http://eduguru.biz:3006";
 
 export const config = {
-    // imageurl:'http://localhost:3006/file',
-    imageurl:'http://eduguru.biz:3006/file',
+    imageurl:'http://localhost:3006/file',
+    // imageurl:'http://eduguru.biz:3006/file',
     Login: `${Base_URI}/admin/login`,
     GetSections: `${Base_URI}/admin/getSection`,
     GetBanner: `${Base_URI}/admin/getBanner`,
@@ -22,6 +23,7 @@ export const config = {
     SaveOrUpdateBanner: `${Base_URI}/admin/saveOrUpdateBanner`,
     GetAllCategories: `${Base_URI}/admin/getAllCategories`,
     SavePageContent: `${Base_URI}/admin/savePageContent`,
+    EditPageContent: `${Base_URI}/admin/updatePageContent`,
     GetAllPageContents: `${Base_URI}/admin/getAllPageContents`,
     GetPageContentById: `${Base_URI}/admin/getPageContentById`,
     GetPageContentByCategory: `${Base_URI}/admin/getPageContentByCategory`,
@@ -29,6 +31,7 @@ export const config = {
     GetAllServices: `${Base_URI}/admin/getAllServices`,
     GetServicesById: `${Base_URI}/admin/getServiceById`,
     DeleteService: `${Base_URI}/admin/deleteService`,
+    EditService: `${Base_URI}/admin/updateService`,
 
     
 };

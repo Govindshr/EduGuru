@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { config } from "../services/config";
-import { Trash2, Eye } from "lucide-react";
+import { Trash2, Eye , PenSquare } from "lucide-react";
 import styles from "../styles/Admin.module.css";
 import { useNavigate } from "react-router-dom";
 
@@ -145,6 +145,12 @@ const AllPageContents = () => {
                     onClick={() => navigate(`/admin/view-page-content/${query._id}`)}
                   >
                     <Eye size={18} />
+                  </a>
+                  <a
+                     onClick={() => navigate(`/admin/edit-category/${query._id}`)}
+                    style={{ cursor: "pointer", marginLeft: "5px" }}
+                  >
+                    <PenSquare size={18} />
                   </a>
                   <a
                     onClick={() => handleDeletePartner(query._id)}

@@ -71,7 +71,7 @@ function Team() {
             <p className="px-lg-5 text-white-50">
             {formData?.description} </p>
             <a href="" className="text-white text-nowrap">
-              <u>View More</u>
+              <u> </u>
             </a>
           </div>
           <div className="row">
