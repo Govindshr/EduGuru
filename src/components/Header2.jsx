@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function Header2({ onContactClick }) {
+function Header2({ onContactClick , data}) {
   const [isFixed, setIsFixed] = useState(false);
   const navigate = useNavigate();
 

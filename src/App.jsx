@@ -34,6 +34,7 @@ import ShowServices from "./admin/pages/AllServices";
 import PrivateRoute from "./admin/components/PrivateRoutes";
 import EditService from "./admin/pages/EditService";
 import EditPageContent from "./admin/pages/EditPagecontent";
+import ViewServiceDetails from "./admin/pages/ViewService";
 
 function App() {
   return (
@@ -73,6 +74,7 @@ function App() {
           <Route path="services-list" element={<ShowServices />} />
           <Route path="edit-service/:id" element={<EditService />} />
           <Route path="edit-category/:id" element={<EditPageContent />} />
+          <Route path="viewservices/:id" element={<ViewServiceDetails />} />
         </Route>
       </Routes>
     </Router>

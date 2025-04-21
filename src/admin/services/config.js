@@ -1,11 +1,11 @@
 import EditService from "../pages/EditService";
 
-export const Base_URI = "http://localhost:3006";
-// export const Base_URI = "http://eduguru.biz:3006";
+// export const Base_URI = "http://localhost:3006";
+export const Base_URI = "http://eduguru.biz:3006";
 
 export const config = {
-    imageurl:'http://localhost:3006/file',
-    // imageurl:'http://eduguru.biz:3006/file',
+    // imageurl:'http://localhost:3006/file',
+    imageurl:'http://eduguru.biz:3006/file',
     Login: `${Base_URI}/admin/login`,
     GetSections: `${Base_URI}/admin/getSection`,
     GetBanner: `${Base_URI}/admin/getBanner`,

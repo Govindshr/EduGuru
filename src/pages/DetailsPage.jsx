@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { config } from "../admin/services/config";
 import Header2 from "../components/Header2";
+import { useParams } from "react-router-dom";
 import Footer from "../components/Footer";
 import InnerBanner from "../components/InnerBanner";
 import MarketingSection from "../components/MarketingSection";
@@ -13,19 +14,27 @@ import { useRef } from 'react';
 
 function DetailsPage() {
   const footerRef = useRef(null);
+   const { id } = useParams();
   const location = useLocation();
   const [selectedCategoryData, setSelectedCategoryData] = useState(null);
+  const [data, setData] = useState(null);
 
-  const handleCategorySelect = async (categoryId) => {
-   console.log(categoryId)
-    try {
-      const response = await axios.post(config.GetPageContentById, { id: categoryId });
-      console.log("Data from selected category:", response.data);
-      setSelectedCategoryData(response.data);
-    } catch (error) {
-      console.error("Error fetching data for selected category:", error);
-    }
-  };
+
+
+  useEffect(() => {
+    const fetchDetails = async () => {
+      try {
+        const res = await axios.post(config.GetServicesById, { id });
+    
+        console.log("aa gya ana service data",res.data.data)
+        setData(res.data?.data);
+      } catch (err) {
+        console.error("Error fetching service details:", err);
+        alert("Failed to load service details");
+      }
+    };
+    if (id) fetchDetails();
+  }, [id]);
 
   
   const scrollToFooter = () => {
@@ -39,11 +48,11 @@ function DetailsPage() {
 
   return (
     <>
-      <Header2 onContactClick={scrollToFooter} />
-      <InnerBanner  />
-      <MarketingSection onCategorySelect={handleCategorySelect} selectedCategoryData={selectedCategoryData} />
+      <Header2 onContactClick={scrollToFooter}  />
+      <InnerBanner  data={data} />
+      <MarketingSection  data={data} />
       <ProcessSection />
-      <AreaOfFunction  selectedCategoryData={selectedCategoryData}/>
+      <AreaOfFunction data={data}/>
       <Footer ref={footerRef} />
     </>
   );

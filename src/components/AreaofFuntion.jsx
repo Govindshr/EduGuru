@@ -4,12 +4,12 @@ import { config } from '../admin/services/config';
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import SplitType from "split-type";
-function AreaOfFunction({selectedCategoryData}) {
+function AreaOfFunction({data}) {
   const headingRef = useRef(null);
 
 
   useEffect(() => {
-    if (!selectedCategoryData?.data[0]?.heading || !headingRef.current) return;
+    if (!data?.area_heading || !headingRef.current) return;
   
     let split;
   
@@ -43,14 +43,14 @@ function AreaOfFunction({selectedCategoryData}) {
       if (split) split.revert(); // clean up split
       trigger.kill(); // clean up trigger
     };
-  }, [selectedCategoryData?.data]);
+  }, [data]);
   
-console.log("ye aa rha ahe bhai ",selectedCategoryData)
+// console.log("ye aa rha ahe bhai ",data)
   return (
     <section className="areaOfFunction">
       <div className="container">
         <div className="section-heading pb-3 text-start">
-          <h2 ref={headingRef} className="mw-100 mb-0 split-text">{selectedCategoryData?.data[0]?.area_heading}</h2>
+          <h2 ref={headingRef} className="mw-100 mb-0 split-text">{data?.area_heading}</h2>
         </div>
         <div className="row">
           {/* Left column - Text content */}
@@ -58,8 +58,10 @@ console.log("ye aa rha ahe bhai ",selectedCategoryData)
             <div className="text-start">
             
                 
-                  <p>{selectedCategoryData?.data[0]?.area_description}</p>
-               
+                  {/* <p></p> */}
+                  <p
+  dangerouslySetInnerHTML={{ __html: data?.area_description || "",}}
+/>
            
             </div>
           </div>
@@ -68,18 +70,18 @@ console.log("ye aa rha ahe bhai ",selectedCategoryData)
           <div className="col-lg-6">
             <div className="d-flex functionImg gap-3">
               <figure className="img1">
-                <img src={`${config.imageurl}/${selectedCategoryData?.data[0]?.area_images[0]}`} alt="Function 1" />
+                <img src={`${config.imageurl}/${data?.area_images[0]}`} alt="Function 1" />
               </figure>
               <div className="img2">
                 <p>
-                {selectedCategoryData?.data[0]?.area_text}
+                {data?.area_text}
                 </p>
                 {/* <a href={selectedCategoryData?.data[0]?.area_route} className="btn btn-success px-3 mh-auto">
                 {selectedCategoryData?.data[0]?.area_button}
                   <img className="ms-2" src="images/arrow-white.svg" alt="Arrow" width="20" />
                 </a> */}
                 <figure className="mt-3">
-                  <img src={`${config.imageurl}/${selectedCategoryData?.data[0]?.area_images[1]}`} alt="Function 2" />
+                  <img src={`${config.imageurl}/${data?.area_images[1]}`} alt="Function 2" />
                 </figure>
               </div>
             </div>

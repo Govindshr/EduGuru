@@ -4,19 +4,49 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { config } from "../services/config";
 import styles from "../styles/Admin.module.css";
+import { EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 
 const AddService = () => {
   const navigate = useNavigate(); // ⬅️ step 1
   const [formData, setFormData] = useState({
     name: "",
     heading: "",
-    type: "", // default unselected
+    description: "", // ✅ new field
+    area_heading: "",
+    area_description: "",
+    area_text: "",
+    area_images: [],
+    type: "",
     icon: null,
     image: null,
     icon_preview: "",
     image_preview: "",
   });
 
+  const editor = useEditor({
+    extensions: [StarterKit],
+    content: formData.description,
+    onUpdate: ({ editor }) => {
+      setFormData((prev) => ({
+        ...prev,
+        description: editor.getHTML(),
+      }));
+    },
+  });
+
+  const areaDescEditor = useEditor({
+    extensions: [StarterKit],
+    content: formData.area_description,
+    onUpdate: ({ editor }) => {
+      setFormData((prev) => ({
+        ...prev,
+        area_description: editor.getHTML(),
+      }));
+    },
+  });
+  
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -36,10 +66,17 @@ const AddService = () => {
     const payload = new FormData();
     payload.append("name", formData.name);
     payload.append("heading", formData.heading);
+    payload.append("description", formData.description);
+    payload.append("area_heading",formData.area_heading);
+    payload.append("area_description",formData.area_description);
+    payload.append("area_text",formData.area_text);
     payload.append("type", formData.type);
     if (formData.icon) payload.append("icon", formData.icon);
     if (formData.image) payload.append("image", formData.image);
-
+    formData.area_images.forEach((file) => {
+      payload.append("area_images", file);
+    });
+console.log("formdata description",formData.description)
     try {
       const res = await axios.post(config.AddServices, payload, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -52,6 +89,15 @@ const AddService = () => {
     }
   };
 
+  const handleAreaImagesChange = (e) => {
+    const files = Array.from(e.target.files);
+    setFormData((prev) => ({
+      ...prev,
+      area_images: files,
+    }));
+  };
+
+
   return (
     <div className={styles.formWrapper}>
       <h2>Add Service</h2>
@@ -62,6 +108,17 @@ const AddService = () => {
         <label>Heading *
           <input type="text" name="heading" value={formData.heading} onChange={handleChange} required />
         </label>
+        <label className={styles.fullWidth}>
+  Description
+  <div
+    className={styles.tiptapWrapper}
+    onClick={() => editor?.commands.focus()} // ✅ make whole box clickable
+  >
+    <EditorContent editor={editor} />
+  </div>
+</label>
+
+
         <label>Type *
           <select
             name="type"
@@ -88,6 +145,31 @@ const AddService = () => {
           {formData.image_preview && <img src={formData.image_preview} className={styles.inlinePreview} alt="Image preview" />}
         </label>
 
+          <label>Area Of Function Heading
+                  <input type="text" name="area_heading" value={formData.area_heading} onChange={handleChange} />
+                </label>
+
+                <label>Area Of Function Right Top Text
+                  <input type="text" name="area_text" value={formData.area_text} onChange={handleChange} />
+                </label>
+
+                <label className={styles.fullWidth}>
+  Area Of Function Description
+  <div
+    className={styles.tiptapWrapper}
+    onClick={() => areaDescEditor?.commands.focus()}
+  >
+    <EditorContent editor={areaDescEditor} />
+  </div>
+</label>
+
+
+               
+              
+                <label className={styles.fullWidth}>Area Images
+                  <input type="file" multiple onChange={handleAreaImagesChange} />
+                </label>
+
         <button type="submit" className={`${styles.submitBtn} ${styles.fullWidth}`}>Submit</button>
       </form>
     </div>
@@ -95,3 +177,13 @@ const AddService = () => {
 };
 
 export default AddService;
+
+/* {submittedDescription && (
+  <div className={styles.previewBox}>
+    <h3>Live Preview of Description</h3>
+    <div
+      className={styles.richPreview}
+      dangerouslySetInnerHTML={{ __html: submittedDescription }}
+    />
+  </div>
+)} */

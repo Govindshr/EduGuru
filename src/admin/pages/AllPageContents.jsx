@@ -117,7 +117,7 @@ const AllPageContents = () => {
           <tr>
           <th>S.No.</th>
             <th>Heading</th>
-            <th>Description</th>
+            {/* <th>Description</th> */}
             {/* <th>Category</th> */}
             <th>Image</th>
             <th>Action</th>
@@ -128,7 +128,7 @@ const AllPageContents = () => {
             <tr key={index}>
                <td>{index + 1}</td>
               <td>{query.heading}</td>
-              <td>{query.description}</td>
+              {/* <td>{query.description}</td> */}
               {/* <td>{query?.category_name ? query?.category_name : "N/A"}</td> */}
               <td>
                 <img

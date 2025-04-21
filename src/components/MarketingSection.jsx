@@ -6,63 +6,38 @@ import SplitType from "split-type";
 import { config } from "../admin/services/config";
 import { useParams } from "react-router-dom";
 
-function MarketingSection({ onCategorySelect, selectedCategoryData }) {
+function MarketingSection({ data }) {
   const { id } = useParams();
   const headingRef = useRef(null);
   const [categories, setCategories] = useState([]);
   const [activeCategoryId, setActiveCategoryId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterdData ,setFilterdData] = useState([])
+  const [selectedCategoryData, setSelectedCategoryData] = useState(null);
 
-  const fetchCategories = async (search = "", autoSelectFirst = false) => {
+  const fetchCategories = async (search = "") => {
     try {
-      const res = await axios.post(config.GetAllPageContents, {  heading: search,category_id: id } );
-      const fetched = res.data?.data;
-      setCategories(fetched);
-      console.log("main id ", fetched)
-
-      // ✅ Only auto-select first category if flag is true
-      if (fetched.length && autoSelectFirst) {
-        const firstId = fetched[0]._id;
-        setActiveCategoryId(firstId);
-        onCategorySelect?.(firstId);
-      }
+      const res = await axios.post(config.GetAllPageContents, {
+        heading: search,
+        category_id: id,
+      });
+      setCategories(res.data?.data);
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
   };
 
-  const fetchContent = async () => {
-    try {
-      const res = await axios.post(config.GetServicesById, {
-        id: id,
-      });
-  
-     
-      console.log("Filtered Details:", res.data?.data);
-      setFilterdData(res.data?.data)
-    } catch (err) {
-      console.error("Error fetching section:", err);
-    }
-  };
-  
   useEffect(() => {
-    fetchCategories("", true); // ✅ only auto-select on mount
-    fetchContent()
+    fetchCategories(); // No auto-select on mount
   }, []);
 
- 
-  
-  
-
   useEffect(() => {
-    if (!selectedCategoryData?.data[0]?.heading || !headingRef.current) return;
-  
+    if (!headingRef.current) return;
+
     const element = headingRef.current;
     const split = new SplitType(element, { types: "words, chars" });
-  
+
     const timeline = gsap.timeline();
-  
+
     timeline.from(split.words, {
       opacity: 0,
       x: 30,
@@ -70,7 +45,7 @@ function MarketingSection({ onCategorySelect, selectedCategoryData }) {
       stagger: 0.1,
       ease: "power3.out",
     });
-  
+
     timeline.from(split.chars, {
       opacity: 0,
       x: 40,
@@ -79,24 +54,36 @@ function MarketingSection({ onCategorySelect, selectedCategoryData }) {
       ease: "power3.out",
       delay: 0.1,
     });
-  
+
     return () => {
       split.revert();
       timeline.kill();
     };
-  }, [selectedCategoryData]);
-  
+  }, [selectedCategoryData, data]);
+
   const handleClick = (e, category) => {
     e.preventDefault();
     setActiveCategoryId(category?._id);
-    onCategorySelect?.(category?._id);
+    handleCategorySelect(category?._id);
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
-    fetchCategories(searchTerm, false); 
+    fetchCategories(searchTerm, false);
   };
-console.log(selectedCategoryData)
+
+  const handleCategorySelect = async (categoryId) => {
+    try {
+      const response = await axios.post(config.GetPageContentById, {
+        id: categoryId,
+      });
+      const selected = response.data?.data?.[0];
+      setSelectedCategoryData(selected);
+    } catch (error) {
+      console.error("Error fetching data for selected category:", error);
+    }
+  };
+
   return (
     <section className="marketingSection">
       <div className="container">
@@ -106,18 +93,23 @@ console.log(selectedCategoryData)
               <h2
                 ref={headingRef}
                 className="mw-100 mb-4 split-text"
-                key={selectedCategoryData?.data[0]?.heading}
+                key={selectedCategoryData?.heading || data?.name}
               >
-                {filterdData?.name}
+                {selectedCategoryData?.heading || data?.name}
               </h2>
 
               <figure>
                 <img
-                  src={`${config.imageurl}/${selectedCategoryData?.data[0]?.image}`}
-                  alt="Branding Portfolio"
+                  src={`${config.imageurl}/${selectedCategoryData?.image || data?.image}`}
+                  alt={selectedCategoryData?.image || data?.image}
                 />
               </figure>
-              <p>{selectedCategoryData?.data[0]?.description}</p>
+              <div
+  dangerouslySetInnerHTML={{
+    __html: selectedCategoryData?.description || data?.description || "",
+  }}
+/>
+
             </div>
           </div>
 
@@ -132,7 +124,7 @@ console.log(selectedCategoryData)
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <a style={{cursor:'pointer'}} onClick={handleSearch}>
+                <a style={{ cursor: "pointer" }} onClick={handleSearch}>
                   <img src="images/search-icon.svg" alt="Search" width="20" />
                 </a>
               </form>

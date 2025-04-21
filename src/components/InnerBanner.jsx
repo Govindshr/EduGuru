@@ -5,7 +5,7 @@ import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import SplitType from "split-type";
 import { config } from "../admin/services/config";
-function InnerBanner() {
+function InnerBanner({data}) {
    const navigate = useNavigate();
   const [formData, setFormData] = useState();
   const headingRef = useRef(null);
@@ -83,7 +83,7 @@ function InnerBanner() {
     >
       <div className="container">
         <div className="innerbannerTxt">
-          <h1 ref={headingRef} className="split-text">{formData?.title}</h1>
+          <h1 ref={headingRef} className="split-text">{data?.name}</h1>
           <div className="breadcrumbDiv">
             <ol className="breadcrumb mb-0">
               

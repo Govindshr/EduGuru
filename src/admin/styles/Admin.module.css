@@ -347,6 +347,23 @@
   border-color: #3085d6;
 }
 
+/* Add inside Admin.module.css */
+.tiptapWrapper {
+  border: 1px solid #ccc;
+  min-height: 150px;
+  padding: 8px;
+  border-radius: 6px;
+  background: white;
+  cursor: text; /* ✅ shows input intent */
+}
+
+.tiptapWrapper > div {
+  outline: none;
+}
+
+
+
+
 
 
 

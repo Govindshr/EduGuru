@@ -30,7 +30,10 @@ const ViewPageContent = () => {
       <div className={styles.cardBoxSmall}>
         {/* <p><strong>Category:</strong> {pageContent?.category_id?.name}</p> */}
         <p><strong>Heading:</strong> {pageContent.heading}</p>
-        <p><strong>Description:</strong> {pageContent.description}</p>
+        <p><strong>Description:</strong> <div
+      className={styles.richPreview}
+      dangerouslySetInnerHTML={{ __html: pageContent.description }}
+    /></p>
         {pageContent.image && (
           <div>
             <strong>Image:</strong><br />
@@ -39,11 +42,11 @@ const ViewPageContent = () => {
         )}
         {/* <hr />
         <h3>Area Details</h3> */}
-        <p><strong>Area Heading:</strong> {pageContent.area_heading}</p>
+        {/* <p><strong>Area Heading:</strong> {pageContent.area_heading}</p>
         <p><strong>Area Description:</strong> {pageContent.area_description}</p>
-        <p><strong>Area Text:</strong> {pageContent.area_text}</p>
+        <p><strong>Area Text:</strong> {pageContent.area_text}</p> */}
 
-        <div>
+        {/* <div>
           <strong>Area Images:</strong>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginTop: 10 }}>
             {pageContent.area_images?.map((img, idx) => (
@@ -55,7 +58,7 @@ const ViewPageContent = () => {
               />
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

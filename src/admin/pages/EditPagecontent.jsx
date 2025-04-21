@@ -4,12 +4,15 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { config } from "../services/config";
 import styles from "../styles/Admin.module.css";
+import { EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 
 const EditPageContent = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [previewAreaImages, setPreviewAreaImages] = useState([]); // ⬅️ NEW
+  const [descriptionLoaded, setDescriptionLoaded] = useState(false);
 
+  const [previewAreaImages, setPreviewAreaImages] = useState([]); // ⬅️ NEW
 
   const [categories, setCategories] = useState([]);
   const [formData, setFormData] = useState({
@@ -25,7 +28,17 @@ const EditPageContent = () => {
     area_button: "",
     area_route: "",
   });
-
+  const descriptionEditor = useEditor({
+    extensions: [StarterKit],
+    content: formData.description,
+    onUpdate: ({ editor }) => {
+      setFormData((prev) => ({
+        ...prev,
+        description: editor.getHTML(),
+      }));
+    },
+  });
+  
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
@@ -36,7 +49,7 @@ const EditPageContent = () => {
 
         setCategories(servicesRes.data?.data || []);
 
-console.log("2",contentRes.data.data)
+        console.log("2", contentRes.data.data);
 
         const data = contentRes.data.data[0];
         setFormData({
@@ -47,14 +60,15 @@ console.log("2",contentRes.data.data)
           image_preview: data.image || "",
           area_heading: data.area_heading,
           area_description: data.area_description,
-          area_images: [], // for new uploads only
+          area_images: [], 
           area_text: data.area_text,
           area_button: data.area_button,
           area_route: data.area_route,
         });
-        
+        descriptionEditor?.commands.setContent(data.description || "");
+
+
         setPreviewAreaImages(data.area_images || []); // ⬅️ NEW
-        
       } catch (err) {
         console.error("Failed to load data:", err);
         alert("Failed to load data");
@@ -63,6 +77,13 @@ console.log("2",contentRes.data.data)
 
     fetchInitialData();
   }, [id]);
+  useEffect(() => {
+    if (descriptionEditor && !descriptionLoaded && formData.description) {
+      descriptionEditor.commands.setContent(formData.description);
+      setDescriptionLoaded(true);
+    }
+  }, [descriptionEditor, formData.description, descriptionLoaded]);
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -88,7 +109,6 @@ console.log("2",contentRes.data.data)
     }));
     setPreviewAreaImages([]); // ⬅️ clear previews since new images are selected
   };
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -123,70 +143,89 @@ console.log("2",contentRes.data.data)
 
   return (
     <div className={styles.formWrapper}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <h2>Edit Page Content</h2>
-        <button className={styles.addBtn} onClick={() => navigate("/admin/services-list")}>Back</button>
+        <button
+          className={styles.addBtn}
+          onClick={() => navigate("/admin/services-list")}
+        >
+          Back
+        </button>
       </div>
 
-      <form onSubmit={handleSubmit} className={styles.formGrid2Col} encType="multipart/form-data">
-        <label>Service
-          <select name="category_id" className="form-control" value={formData.category_id} onChange={handleChange}>
+      <form
+        onSubmit={handleSubmit}
+        className={styles.formGrid2Col}
+        encType="multipart/form-data"
+      >
+        <label>
+          Service
+          <select
+            name="category_id"
+            className="form-control"
+            value={formData.category_id}
+            onChange={handleChange}
+          >
             <option value="">Select Service</option>
             {categories.map((cat) => (
-              <option key={cat._id} value={cat._id}>{cat.name}</option>
+              <option key={cat._id} value={cat._id}>
+                {cat.name}
+              </option>
             ))}
           </select>
         </label>
 
-        <label>Name
-          <input type="text" name="heading" value={formData.heading} onChange={handleChange} />
+        <label>
+          Name
+          <input
+            type="text"
+            name="heading"
+            value={formData.heading}
+            onChange={handleChange}
+          />
         </label>
 
-        <label className={styles.fullWidth}>Description
-          <textarea name="description" value={formData.description} onChange={handleChange} />
-        </label>
+        <label className={styles.fullWidth}>
+  Description
+  <div
+    className={styles.tiptapWrapper}
+    onClick={() => descriptionEditor?.commands.focus()}
+  >
+    <EditorContent editor={descriptionEditor} />
+  </div>
+</label>
 
-        <label className={styles.fullWidth}>Image
+
+        <label className={styles.fullWidth}>
+          Image
           <input type="file" accept="image/*" onChange={handleImageChange} />
           {formData.image_preview && (
             <img
-              src={formData.image_preview.startsWith("blob:") ? formData.image_preview : `${config.imageurl}/${formData.image_preview}`}
+              src={
+                formData.image_preview.startsWith("blob:")
+                  ? formData.image_preview
+                  : `${config.imageurl}/${formData.image_preview}`
+              }
               alt="preview"
               className={styles.inlinePreviewLarge}
             />
           )}
         </label>
 
-        <label>Area Of Function Heading
-          <input type="text" name="area_heading" value={formData.area_heading} onChange={handleChange} />
-        </label>
+        
 
-        <label>Area Of Function Description
-          <textarea name="area_description" value={formData.area_description} onChange={handleChange} />
-        </label>
-
-        <label>Area Of Function Right Top Text
-          <input type="text" name="area_text" value={formData.area_text} onChange={handleChange} />
-        </label>
-
-        <label className={styles.fullWidth}>Area Images
-          <input type="file" multiple onChange={handleAreaImagesChange} />
-          {previewAreaImages.length > 0 && (
-  <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-    {previewAreaImages.map((img, i) => (
-      <img
-        key={i}
-        src={`${config.imageurl}/${img}`}
-        alt={`area_img_${i}`}
-        style={{ width: "100px", height: "auto", borderRadius: "6px" }}
-      />
-    ))}
-  </div>
-)}
-
-        </label>
-
-        <button type="submit" className={`${styles.submitBtn} ${styles.fullWidth}`}>Update</button>
+        <button
+          type="submit"
+          className={`${styles.submitBtn} ${styles.fullWidth}`}
+        >
+          Update
+        </button>
       </form>
     </div>
   );

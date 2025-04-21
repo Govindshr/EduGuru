@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 
 import { config } from "../services/config";
 import styles from "../styles/Admin.module.css";
@@ -23,6 +25,17 @@ const PageContent = () => {
     area_button: "",
     area_route: ""
   });
+  const descriptionEditor = useEditor({
+    extensions: [StarterKit],
+    content: formData.description,
+    onUpdate: ({ editor }) => {
+      setFormData((prev) => ({
+        ...prev,
+        description: editor.getHTML(),
+      }));
+    },
+  });
+  
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -110,32 +123,21 @@ fetchServices()
         <label>Name
           <input type="text" name="heading" value={formData.heading} onChange={handleChange} />
         </label>
-        <label className={styles.fullWidth}>Description
-          <textarea name="description" value={formData.description} onChange={handleChange} />
-        </label>
+        <label className={styles.fullWidth}>
+  Description
+  <div
+    className={styles.tiptapWrapper}
+    onClick={() => descriptionEditor?.commands.focus()}
+  >
+    <EditorContent editor={descriptionEditor} />
+  </div>
+</label>
+
         <label className={styles.fullWidth}>Image
           <input type="file" accept="image/*" onChange={handleImageChange} />
           {formData.image_preview && (
             <img src={formData.image_preview} alt="preview" className={styles.inlinePreviewLarge} />
           )}
-        </label>
-        <label>Area Of Function Heading
-          <input type="text" name="area_heading" value={formData.area_heading} onChange={handleChange} />
-        </label>
-        <label>Area Of Function Description
-          <textarea name="area_description" value={formData.area_description} onChange={handleChange} />
-        </label>
-        <label>Area Of Function Right Top Text
-          <input type="text" name="area_text" value={formData.area_text} onChange={handleChange} />
-        </label>
-        {/* <label>Area Button
-          <input type="text" name="area_button" value={formData.area_button} onChange={handleChange} />
-        </label> */}
-        {/* <label>Area Route
-          <input type="text" name="area_route" value={formData.area_route} onChange={handleChange} />
-        </label> */}
-        <label className={styles.fullWidth}>Area Images
-          <input type="file" multiple onChange={handleAreaImagesChange} />
         </label>
         <button type="submit" className={`${styles.submitBtn} ${styles.fullWidth}`}>Submit</button>
       </form>
