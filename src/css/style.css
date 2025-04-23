@@ -676,11 +676,27 @@ li {
 }
 
 .footerMain {
-    background: #000;
+    background-color: #000;
     position: relative;
     padding-top: 20px;
     position: relative;
-
+    background-position: center !important;
+    background-size: cover !important;
+    z-index: 1;
+    max-width: 1920px;
+    margin: auto;
+}
+.footerMain::after{
+    content: "";
+    position:absolute;
+    bottom:0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(../images/footer-bottom-line.svg);
+    background-position: top center;
+    background-size: cover;
+    z-index: -1;
 }
 
 .footerTop {
@@ -699,7 +715,7 @@ li {
 
 
 .bgimg {
-    margin: -4px -190px 0px -195px;
+    margin: -4px -194px 0px -195px;
     z-index: -1;
     width: auto;
     position: absolute;
@@ -770,8 +786,6 @@ li {
 }
 
 .footerBttom {
-    border-top: 1px solid #707070;
-    margin-top: 40px;
     padding: 15px 0;
 }
 
@@ -1573,90 +1587,91 @@ li {
     transform: translateY(20px);
     animation: fadeInWord 0.8s ease-out forwards;
     animation-delay: calc(var(--word-index) * 0.1s);
-  }
-  
-  .char-animation {
+}
+
+.char-animation {
     display: inline-block;
     opacity: 0;
     transform: translateY(20px);
     animation: fadeInChar 0.6s ease-out forwards;
     animation-delay: calc(var(--char-index) * 0.02s);
-  }
-  
-  /* Word animation */
-  @keyframes fadeInWord {
+}
+
+/* Word animation */
+@keyframes fadeInWord {
     to {
-      opacity: 1;
-      transform: translateY(0);
+        opacity: 1;
+        transform: translateY(0);
     }
-  }
-  
-  /* Char animation */
-  @keyframes fadeInChar {
+}
+
+/* Char animation */
+@keyframes fadeInChar {
     to {
-      opacity: 1;
-      transform: translateY(0);
+        opacity: 1;
+        transform: translateY(0);
     }
-  }
-  
-  .login-container {
+}
+
+.login-container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     background: #f4f6f8;
-  }
-  
-  .login-box {
+}
+
+.login-box {
     background: white;
     padding: 2rem;
     width: 100%;
     max-width: 400px;
     border-radius: 12px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.1);
-  }
-  
-  .login-title {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.login-title {
     text-align: center;
     margin-bottom: 1.5rem;
     font-size: 1.8rem;
     color: #333;
-  }
-  
-  .login-error {
+}
+
+.login-error {
     color: red;
     font-size: 0.9rem;
     text-align: center;
     margin-bottom: 1rem;
-  }
-  
-  .login-form {
+}
+
+.login-form {
     display: flex;
     flex-direction: column;
-  }
-  
-  .login-label {
+}
+
+.login-label {
     font-weight: 500;
     margin-bottom: 0.3rem;
     margin-top: 1rem;
-  }
-  
+}
 
-  .login-password-wrapper {
+
+.login-password-wrapper {
     position: relative;
     width: 100%;
-  }
-  
-  .login-input {
+}
+
+.login-input {
     width: 100%;
-    padding: 0.5rem 2.5rem 0.5rem 0.75rem; /* room for the eye icon */
+    padding: 0.5rem 2.5rem 0.5rem 0.75rem;
+    /* room for the eye icon */
     border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 1rem;
     background-color: #eef3ff;
-  }
-  
-  .login-toggle-password {
+}
+
+.login-toggle-password {
     position: absolute;
     right: 10px;
     top: 50%;
@@ -1666,11 +1681,11 @@ li {
     cursor: pointer;
     color: #666;
     font-size: 1.2rem;
-  }
-   
+}
 
-  
-  .login-button {
+
+
+.login-button {
     margin-top: 1.5rem;
     background: #007bff;
     border: none;
@@ -1680,15 +1695,35 @@ li {
     border-radius: 6px;
     cursor: pointer;
     transition: background 0.2s ease;
-  }
-  
-  .login-button:hover {
+}
+
+.login-button:hover {
     background: #0056b3;
-  }
-  .starRatingWrapper {
+}
+
+.starRatingWrapper {
     display: flex;
     gap: 4px;
-    color: #21b573; /* green tint */
+    color: #21b573;
+    /* green tint */
     font-size: 15px;
-  }
-  
+}
+
+.founderInsight .modal-dialog {
+    max-width: 600px;
+}
+
+.founderInsight h4 {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.founderInsight p {
+    font-size: 12px;
+}
+
+.johnImg img {
+    width: 150px;
+    height: 164px;
+    object-fit: cover;
+}

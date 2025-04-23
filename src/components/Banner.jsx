@@ -21,9 +21,6 @@ function Banner({ onContactClick }) {
     fetchSection();
   }, []);
 
-  const handleDesignClick = () => setShowModal(true);
-  const closeModal = () => setShowModal(false);
-
   return (
     <section className="mainbanner">
       <div className="container">
@@ -42,7 +39,8 @@ function Banner({ onContactClick }) {
           <div className="bannerimg">
             <figure className="mb-0 d-inline-block position-relative" style={{ cursor: 'pointer' }}>
               <img src={`${config.imageurl}/${formData?.profile_image}`} alt="Banner" width="340" />
-              <a onClick={handleDesignClick} className="buttonIcon">
+              <a  data-bs-toggle="modal"
+                    data-bs-target="#founderInsight" className="buttonIcon">
                 <img src="/images/arrow-white.svg" alt="" />
               </a>
             </figure>
@@ -50,56 +48,39 @@ function Banner({ onContactClick }) {
         </div>
       </div>
 
-      {showModal && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={e => e.stopPropagation()}>
-            <h2>Design Modal</h2>
-            <p>This modal contains a heading and a paragraph to guide the user.</p>
-            <button className="btn btn-secondary mt-3" onClick={closeModal}>Close</button>
+      <div className="modal fade founderInsight" id="founderInsight">
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content border-0 rounded-0">
+            <div className="modal-header border-0">
+              <h1 className="modal-title fs-6 fw-semibold">
+              Founder's Insight:
+              </h1>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              />
+            </div>
+            <div className="modal-body">
+              <div className="row">
+                <div className="col-md-4 pe-md-2 mb-3">
+               <figure className="johnImg">
+               <img src="/images/john-doe.jpg" alt="" width="20" />
+               </figure>
+                </div>
+                <div className="col-md-8 ps-md-2 mb-3">
+                 <h4>John Doe</h4>
+                 <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>                 
+                </div>
+              </div>
+              <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+            </div>
           </div>
         </div>
-      )}
+      </div>
 
-<style jsx>{`
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0,0,0,0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    animation: fadeIn 0.3s ease forwards;
-  }
 
-  .modal-content {
-    background: #fff;
-    padding: 2rem;
-    border-radius: 8px;
-    max-width: 500px;
-    width: 100%;
-    box-shadow: 0 0 20px rgba(0,0,0,0.2);
-    text-align: center;
-    transform: scale(0.9);
-    opacity: 0;
-    animation: zoomIn 0.3s ease forwards;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  @keyframes zoomIn {
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-`}</style>
 
     </section>
   );

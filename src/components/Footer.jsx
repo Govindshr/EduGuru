@@ -104,7 +104,7 @@ const Footer = forwardRef((props, ref) => {
   };
 
   return (
-    <footer className="footerMain" ref={ref}>
+    <footer className="footerMain" ref={ref} style={{backgroundImage:"url(images/footer-img.jpg)"}}>
       <div className="footerTop">
         <div className="container">
           <div className="row flex-row-reverse">
