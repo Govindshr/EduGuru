@@ -4,6 +4,7 @@ import { config } from "../admin/services/config";
 
 function Banner({ onContactClick }) {
   const [formData, setFormData] = useState();
+  const [aboutformdata , setAboutFormData] = useState()
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
@@ -19,7 +20,20 @@ function Banner({ onContactClick }) {
       }
     };
     fetchSection();
+    fetchAboutSection()
   }, []);
+
+  const fetchAboutSection = async () => {
+    try {
+      const res = await axios.post(config.GetSections, {
+        section_name: "about_founder",
+      });
+      const data = res.data?.data;
+      if (data) setAboutFormData(data);
+    } catch (err) {
+      console.error("Error fetching main banner:", err);
+    }
+  };
 
   return (
     <section className="mainbanner">
@@ -66,15 +80,15 @@ function Banner({ onContactClick }) {
               <div className="row">
                 <div className="col-md-4 pe-md-2 mb-3">
                <figure className="johnImg">
-               <img src="/images/john-doe.jpg" alt="" width="20" />
+               <img src={`${config.imageurl}/${aboutformdata?.profile_image}`} alt="" width="20" />
                </figure>
                 </div>
                 <div className="col-md-8 ps-md-2 mb-3">
-                 <h4>John Doe</h4>
-                 <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>                 
+                 <h4>{aboutformdata?.title}</h4>
+                 <p>{aboutformdata?.heading}</p>                 
                 </div>
               </div>
-              <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+              <p>{aboutformdata?.subheading}</p>
             </div>
           </div>
         </div>

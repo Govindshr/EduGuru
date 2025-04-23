@@ -35,6 +35,7 @@ import PrivateRoute from "./admin/components/PrivateRoutes";
 import EditService from "./admin/pages/EditService";
 import EditPageContent from "./admin/pages/EditPagecontent";
 import ViewServiceDetails from "./admin/pages/ViewService";
+import AboutFounder from "./admin/pages/AboutFounder";
 
 function App() {
   return (
@@ -53,7 +54,8 @@ function App() {
               <AdminLayout />
             </PrivateRoute>
           }
-        >
+        > 
+          <Route path="about-founder" element={<AboutFounder />} />
           <Route path="main-banner" element={<MainBanner />} />
           <Route path="who-we-are" element={<CorporateForm />} />
           <Route path="design-solution" element={<DesignSolution />} />

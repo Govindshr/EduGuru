@@ -21,6 +21,7 @@ const AdminLayout = () => {
         <aside className={styles.sidebar}>
           <div className={styles.menuGroup}>Landing CMS</div>
           <ul>
+          <NavLink to="about-founder" className={({ isActive }) => (isActive ? styles.active : "")}><li>About Founder</li></NavLink>
             <NavLink to="main-banner" className={({ isActive }) => (isActive ? styles.active : "")}><li>Main Banner</li></NavLink>
             <NavLink to="who-we-are" className={({ isActive }) => (isActive ? styles.active : "")}><li>Who We Are</li></NavLink>
             <NavLink to="design-solution" className={({ isActive }) => (isActive ? styles.active : "")}><li>What We Are</li></NavLink>
