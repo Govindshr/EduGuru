@@ -3,7 +3,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { config } from "../services/config";
 import styles from "../styles/Admin.module.css";
-
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 const AboutFounder = () => {
   const [formData, setFormData] = useState({
     section_name: "about_founder",
@@ -13,6 +14,23 @@ const AboutFounder = () => {
     profileImage: null,
     profileImagePreview: ""
   });
+
+  // Add before return
+const headingEditor = useEditor({
+  extensions: [StarterKit],
+  content: "",
+  onUpdate: ({ editor }) => {
+    setFormData((prev) => ({ ...prev, heading: editor.getHTML() }));
+  },
+});
+
+const subheadingEditor = useEditor({
+  extensions: [StarterKit],
+  content: "",
+  onUpdate: ({ editor }) => {
+    setFormData((prev) => ({ ...prev, subheading: editor.getHTML() }));
+  },
+});
 
   useEffect(() => {
     const fetchSection = async () => {
@@ -25,11 +43,14 @@ const AboutFounder = () => {
           setFormData((prev) => ({
             ...prev,
             title: data.title || "",
-            heading: data.heading || "",
-            subheading: data.subheading || "",
+            // heading: data.heading || "",
+            // subheading: data.subheading || "",
             profileImage: null,
             profileImagePreview: data.profile_image ? `${config.imageurl}/${data.profile_image.replace(/\\/g, '/')}` : ""
           }));
+          // Inside useEffect after fetch
+headingEditor?.commands.setContent(data.heading || "");
+subheadingEditor?.commands.setContent(data.subheading || "");
         }
       } catch (err) {
         console.error("Error fetching main banner:", err);
@@ -83,11 +104,17 @@ const AboutFounder = () => {
           <input type="text" name="title" value={formData.title} onChange={handleChange} />
         </label>
         <label>Upper Description
-          <input type="text" name="heading" value={formData.heading} onChange={handleChange} />
-        </label>
-        <label>Lower Description
-          <input type="text" name="subheading" value={formData.subheading} onChange={handleChange} />
-        </label>
+  <div className={styles.tiptapWrapper} onClick={() => headingEditor?.commands.focus()}>
+    <EditorContent editor={headingEditor} />
+  </div>
+</label>
+
+<label>Lower Description
+  <div className={styles.tiptapWrapper} onClick={() => subheadingEditor?.commands.focus()}>
+    <EditorContent editor={subheadingEditor} />
+  </div>
+</label>
+
        
         <label>Profile Image
           <input type="file" accept="image/*" onChange={handleImageChange} />

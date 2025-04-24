@@ -5,18 +5,20 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 import SplitType from "split-type";
 import { config } from "../admin/services/config";
 
-const Footer = forwardRef((props, ref) => {
+gsap.registerPlugin(ScrollTrigger);
+
+const Footer = forwardRef((props) => {
   const headingRef = useRef(null);
 
   const [formData, setFormData] = useState({
     name: "", phone_number: "", subject: ""
   });
-  const [status, setStatus] = useState({ message: "", type: "" }); // ✅ message state
+  const [status, setStatus] = useState({ message: "", type: "" });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    setStatus({ message: "", type: "" }); // clear message on input
+    setStatus({ message: "", type: "" });
   };
 
   useEffect(() => {
@@ -51,43 +53,47 @@ const Footer = forwardRef((props, ref) => {
 
   useEffect(() => {
     if (!formData?.heading || !headingRef.current) return;
-    let split;
 
-    const trigger = ScrollTrigger.create({
-      trigger: headingRef.current,
-      start: "top 80%",
-      once: true,
-      onEnter: () => {
-        split = new SplitType(headingRef.current, { types: "words, chars" });
+    const timeout = setTimeout(() => {
+      let split;
 
-        gsap.from(split.words, {
-          opacity: 0,
-          x: 50,
-          duration: 1,
-          stagger: 0.2,
-          ease: "power3.out",
-        });
+      const trigger = ScrollTrigger.create({
+        trigger: headingRef.current,
+        start: "top 80%",
+        once: true,
+        onEnter: () => {
+          split = new SplitType(headingRef.current, { types: "words, chars" });
 
-        gsap.from(split.chars, {
-          opacity: 0,
-          x: 80,
-          duration: 1.8,
-          stagger: 0.02,
-          ease: "power3.out",
-          delay: 0.2,
-        });
-      },
-    });
+          gsap.from(split.words, {
+            opacity: 0,
+            x: 50,
+            duration: 1,
+            stagger: 0.2,
+            ease: "power3.out",
+          });
 
-    return () => {
-      if (split) split.revert();
-      trigger.kill();
-    };
+          gsap.from(split.chars, {
+            opacity: 0,
+            x: 80,
+            duration: 1.8,
+            stagger: 0.02,
+            ease: "power3.out",
+            delay: 0.2,
+          });
+        },
+      });
+
+      return () => {
+        if (split) split.revert();
+        trigger.kill();
+      };
+    }, 200); // Delay to ensure scroll position is respected
+
+    return () => clearTimeout(timeout);
   }, [formData]);
 
   const handleSubmit = async () => {
     const { name, phone_number, subject } = formData;
-
     if (!name || !phone_number || !subject) {
       setStatus({ message: "Please fill all required fields.", type: "error" });
       return;
@@ -104,7 +110,7 @@ const Footer = forwardRef((props, ref) => {
   };
 
   return (
-    <footer className="footerMain" ref={ref} style={{backgroundImage:"url(images/footer-img.jpg)"}}>
+    <footer className="footerMain"  style={{ backgroundImage: "url(images/footer-img.jpg)" }}>
       <div className="footerTop">
         <div className="container">
           <div className="row flex-row-reverse">
@@ -116,64 +122,29 @@ const Footer = forwardRef((props, ref) => {
                 <span>{formData?.title}</span>
                 <h2 ref={headingRef} className="split-text">{formData?.heading}</h2>
                 <p>{formData?.description}</p>
-
                 <form>
                   <div className="row">
                     <div className="col-md-6 mb-3">
-                      <div className="form-group">
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="NAME"
-                          name="name"
-                          value={formData.name}
-                          onChange={handleChange}
-                          required
-                        />
-                      </div>
+                      <input type="text" className="form-control" placeholder="NAME" name="name" value={formData.name} onChange={handleChange} required />
                     </div>
                     <div className="col-md-6 mb-3">
-                      <div className="form-group">
-                        <input
-                          type="number"
-                          className="form-control"
-                          placeholder="Phone Number"
-                          name="phone_number"
-                          value={formData.phone_number}
-                          onChange={handleChange}
-                          required
-                        />
-                      </div>
+                      <input type="number" className="form-control" placeholder="Phone Number" name="phone_number" value={formData.phone_number} onChange={handleChange} required />
                     </div>
                     <div className="col-md-12 mb-3">
-                      <div className="form-group">
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="SUBJECT"
-                          name="subject"
-                          value={formData.subject}
-                          onChange={handleChange}
-                          required
-                        />
-                      </div>
+                      <input type="text" className="form-control" placeholder="SUBJECT" name="subject" value={formData.subject} onChange={handleChange} required />
                     </div>
                     <div className="col-md-12">
                       <div className="StartCouncilGroup">
                         <button type="button" className="startBtn" onClick={handleSubmit}>
                           Start Consulting
                         </button>
-                        
                       </div>
-                     
-                    
-                    </div>
-                    {status.message && (
-                        <div style={{ marginTop: "10px", color: status.type === "success" ? "white" : "white" }}>
+                      {status.message && (
+                        <div style={{ marginTop: "10px", color: "white" }}>
                           {status.message}
                         </div>
                       )}
-                      {/* ✅ Show status message here */}
+                    </div>
                   </div>
                 </form>
               </div>
@@ -195,12 +166,8 @@ const Footer = forwardRef((props, ref) => {
               <figure>
                 <img src="/images/logo-white.svg" alt="" width="100" />
               </figure>
-              <p>
-                <img src="/images/email.svg" alt="" width="15" className="me-2" /> {formData.email}
-              </p>
-              <p>
-                <img src="/images/call.svg" alt="" width="15" className="me-2" /> {formData.mobile_number}
-              </p>
+              <p><img src="/images/email.svg" alt="" width="15" className="me-2" /> {formData.email}</p>
+              <p><img src="/images/call.svg" alt="" width="15" className="me-2" /> {formData.mobile_number}</p>
             </div>
             <div className="col-md-6">
               <div className="footerSocila">

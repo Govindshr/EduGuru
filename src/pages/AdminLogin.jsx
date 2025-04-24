@@ -19,7 +19,7 @@ const AdminLogin = () => {
       const res = await axios.post(config.Login, { email, password });
       if (res.data.code === 200 && res.data.token) {
         localStorage.setItem('adminToken', res.data.token);
-        navigate('/admin/main-banner');
+        navigate('/admin/about-founder');
       } else {
         setErrorMsg(res.data.message || 'Login failed');
       }

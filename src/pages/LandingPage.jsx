@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef ,useEffect} from 'react';
 
 import Header from '../components/Header';
 import Banner from '../components/Banner';
@@ -16,19 +16,23 @@ function LandingPage() {
   const footerRef = useRef(null);
   const whatweareref = useRef(null)
 
+    useEffect(() => {
+      window.history.scrollRestoration = "manual"; // Disable browser native restoration
+      window.scrollTo({ top: 0, behavior: "instant" }); // No animation
+    }, []);
   const scrollToFooter = () => {
-    footerRef.current?.scrollIntoView({ behavior: 'smooth' });
+    footerRef.current?.scrollIntoView({ behavior: 'instant' });
   };
 
   const scrollToDesignSolutions = () => {
-    whatweareref.current?.scrollIntoView({ behavior: 'smooth' });
+    whatweareref.current?.scrollIntoView({ behavior: 'instant' });
   };
 
 
   return (
     <>
       <Header />
-      <Banner onContactClick={scrollToFooter} onDesignClick ={scrollToDesignSolutions} />
+      <Banner onContactClick={scrollToFooter}  />
       <WhoWeAre />
       <DesignSolution ref={whatweareref} />
       <Skills />
@@ -36,8 +40,8 @@ function LandingPage() {
       <Portfolio />
       <Testimonials />
       <GetStarted />
-      <Clients />
-      <Footer ref={footerRef} />
+      <Clients  ref={footerRef} />
+      <Footer />
     </>
   );
 }

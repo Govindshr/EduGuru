@@ -31,36 +31,40 @@ function MarketingSection({ data }) {
   }, []);
 
   useEffect(() => {
-    if (!headingRef.current) return;
-
-    const element = headingRef.current;
-    const split = new SplitType(element, { types: "words, chars" });
-
-    const timeline = gsap.timeline();
-
-    timeline.from(split.words, {
-      opacity: 0,
-      x: 30,
-      duration: 0.6,
-      stagger: 0.1,
-      ease: "power3.out",
-    });
-
-    timeline.from(split.chars, {
-      opacity: 0,
-      x: 40,
-      duration: 0.8,
-      stagger: 0.01,
-      ease: "power3.out",
-      delay: 0.1,
-    });
-
-    return () => {
-      split.revert();
-      timeline.kill();
-    };
+    const timeout = setTimeout(() => {
+      if (!headingRef.current) return;
+  
+      const element = headingRef.current;
+      const split = new SplitType(element, { types: "words, chars" });
+  
+      const timeline = gsap.timeline();
+  
+      timeline.from(split.words, {
+        opacity: 0,
+        x: 30,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: "power3.out",
+      });
+  
+      timeline.from(split.chars, {
+        opacity: 0,
+        x: 40,
+        duration: 0.8,
+        stagger: 0.01,
+        ease: "power3.out",
+        delay: 0.1,
+      });
+  
+      return () => {
+        split.revert();
+        timeline.kill();
+      };
+    }, 200); // Delay triggers after scroll is set
+  
+    return () => clearTimeout(timeout);
   }, [selectedCategoryData, data]);
-
+  
   const handleClick = (e, category) => {
     e.preventDefault();
     setActiveCategoryId(category?._id);

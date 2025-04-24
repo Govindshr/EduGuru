@@ -27,38 +27,42 @@ function GetStarted() {
   useEffect(() => {
     if (!formData?.heading || !headingRef.current) return;
   
-    let split;
+    const timeout = setTimeout(() => {
+      let split;
   
-    const trigger = ScrollTrigger.create({
-      trigger: headingRef.current,
-      start: "top 80%",
-      once: true, // only trigger once
-      onEnter: () => {
-        split = new SplitType(headingRef.current, { types: "words, chars" });
+      const trigger = ScrollTrigger.create({
+        trigger: headingRef.current,
+        start: "top 80%",
+        once: true,
+        onEnter: () => {
+          split = new SplitType(headingRef.current, { types: "words, chars" });
   
-        gsap.from(split.words, {
-          opacity: 0,
-          x: 50,
-          duration: 1,
-          stagger: 0.2,
-          ease: "power3.out",
-        });
+          gsap.from(split.words, {
+            opacity: 0,
+            x: 50,
+            duration: 1,
+            stagger: 0.2,
+            ease: "power3.out",
+          });
   
-        gsap.from(split.chars, {
-          opacity: 0,
-          x: 80,
-          duration: 1.8,
-          stagger: 0.02,
-          ease: "power3.out",
-          delay: 0.2,
-        });
-      },
-    });
+          gsap.from(split.chars, {
+            opacity: 0,
+            x: 80,
+            duration: 1.8,
+            stagger: 0.02,
+            ease: "power3.out",
+            delay: 0.2,
+          });
+        },
+      });
   
-    return () => {
-      if (split) split.revert(); // clean up split
-      trigger.kill(); // clean up trigger
-    };
+      return () => {
+        if (split) split.revert();
+        trigger.kill();
+      };
+    }, 200); // ⏱ delay avoids conflict with scrollTo(0, 0)
+  
+    return () => clearTimeout(timeout);
   }, [formData]);
   
     return (

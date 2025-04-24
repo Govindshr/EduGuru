@@ -6,7 +6,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 
-function Clients() {
+function Clients({ref}) {
    const [partners, setPartners] = useState([]);
   const settings = {
     arrows: false,
@@ -69,7 +69,7 @@ function Clients() {
   ];
 
   return (
-    <section className="clientSection">
+    <section className="clientSection" ref={ref}>
       <Slider className="clientSlider" {...settings}>
         {partners.map((src, idx) => (
           <div key={idx}>

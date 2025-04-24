@@ -1,8 +1,10 @@
-import React from 'react';
-import { useEffect,useRef,useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import SplitType from "split-type";
+
+gsap.registerPlugin(ScrollTrigger);
+
 function ProcessSection() {
   const headingRef = useRef(null);
   const steps = [
@@ -16,43 +18,47 @@ function ProcessSection() {
     'Approval',
     'Execution',
   ];
+
   useEffect(() => {
-   
-  
-    let split;
-  
-    const trigger = ScrollTrigger.create({
-      trigger: headingRef.current,
-      start: "top 80%",
-      once: true, // only trigger once
-      onEnter: () => {
-        split = new SplitType(headingRef.current, { types: "words, chars" });
-  
-        gsap.from(split.words, {
-          opacity: 0,
-          x: 50,
-          duration: 1,
-          stagger: 0.2,
-          ease: "power3.out",
-        });
-  
-        gsap.from(split.chars, {
-          opacity: 0,
-          x: 80,
-          duration: 1.8,
-          stagger: 0.02,
-          ease: "power3.out",
-          delay: 0.2,
-        });
-      },
-    });
-  
-    return () => {
-      if (split) split.revert(); // clean up split
-      trigger.kill(); // clean up trigger
-    };
+    const timeout = setTimeout(() => {
+      if (!headingRef.current) return;
+
+      let split;
+
+      const trigger = ScrollTrigger.create({
+        trigger: headingRef.current,
+        start: "top 80%",
+        once: true,
+        onEnter: () => {
+          split = new SplitType(headingRef.current, { types: "words, chars" });
+
+          gsap.from(split.words, {
+            opacity: 0,
+            x: 50,
+            duration: 1,
+            stagger: 0.2,
+            ease: "power3.out",
+          });
+
+          gsap.from(split.chars, {
+            opacity: 0,
+            x: 80,
+            duration: 1.8,
+            stagger: 0.02,
+            ease: "power3.out",
+            delay: 0.2,
+          });
+        },
+      });
+
+      return () => {
+        if (split) split.revert();
+        trigger.kill();
+      };
+    }, 200); // Delay to allow scrollTo(0, 0) to finish
+
+    return () => clearTimeout(timeout);
   }, []);
-  
 
   return (
     <section className="processSection">
@@ -66,7 +72,6 @@ function ProcessSection() {
         </div>
 
         <div className="row align-items-center">
-          {/* Left: Process Phrases */}
           <div className="col-md-12 col-lg-4 mb-3">
             <div className="cardMove">
               <span className="ourProcess prcsOne">Our Process</span>
@@ -75,7 +80,6 @@ function ProcessSection() {
             </div>
           </div>
 
-          {/* Right: Steps */}
           <div className="col-md-12 col-lg-8 mb-3">
             <ul className="ProcesslistUl">
               {steps.map((title, index) => (

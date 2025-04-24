@@ -40,10 +40,10 @@ function DetailsPage() {
   const scrollToFooter = () => {
     footerRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
-
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [location.pathname]);
+    window.history.scrollRestoration = "manual"; // Disable browser native restoration
+    window.scrollTo({ top: 0, behavior: "instant" }); // No animation
+  }, []);
   
 
   return (
