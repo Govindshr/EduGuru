@@ -59,7 +59,7 @@ function Team() {
         if (split) split.revert();
         trigger.kill();
       };
-    }, 200); // ⏱ Wait to respect scroll-to-top
+    }, 200); 
   
     return () => clearTimeout(timeout);
   }, [formData]);

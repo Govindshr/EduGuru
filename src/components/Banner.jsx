@@ -85,10 +85,18 @@ function Banner({ onContactClick }) {
                 </div>
                 <div className="col-md-8 ps-md-2 mb-3">
                  <h4>{aboutformdata?.title}</h4>
-                 <p>{aboutformdata?.heading}</p>                 
+                 {/* <p>{aboutformdata?.heading}</p> */}
+                 <p
+     
+      dangerouslySetInnerHTML={{ __html: aboutformdata?.heading }}
+    />                 
                 </div>
               </div>
-              <p>{aboutformdata?.subheading}</p>
+              {/* <p>{aboutformdata?.subheading}</p> */}
+              <p
+     
+      dangerouslySetInnerHTML={{ __html: aboutformdata?.subheading }}
+    />                
             </div>
           </div>
         </div>
