@@ -165,11 +165,8 @@ function WhoWeAre() {
                         <strong>
                           {formData?.corporate_identity?.vision_title}
                         </strong>
-                        <p>
-                          {/* Creating <span> BRAND</span> and generating{" "}
-                    <span> VALUE</span> */}
-                          {formData?.corporate_identity?.vision_description}
-                        </p>
+                        
+                        <p dangerouslySetInnerHTML={{ __html: formData?.corporate_identity?.vision_description || "" }} />
                       </div>
                     </div>
                     <div className="col-md-12">
@@ -177,9 +174,8 @@ function WhoWeAre() {
                         <strong>
                           {formData?.corporate_identity?.mission_title}
                         </strong>
-                        <p>
-                          {formData?.corporate_identity?.mission_description}
-                        </p>
+                       
+                        <p dangerouslySetInnerHTML={{ __html: formData?.corporate_identity?.mission_description || "" }} />
                       </div>
                     </div>
                   </div>
@@ -190,11 +186,8 @@ function WhoWeAre() {
                       {" "}
                       {formData?.corporate_identity?.management_title}
                     </strong>
-                    <p>
-                      {/* The Management Operates under three principles of integrity,
-                innovation and initiative. */}
-                      {formData?.corporate_identity?.management_description}
-                    </p>
+                   
+                    <p dangerouslySetInnerHTML={{ __html: formData?.corporate_identity?.management_description || "" }} />
                     {/* <p>
                 <span> Integrity:</span> Forms the basis of our relationship.
               </p> */}

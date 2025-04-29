@@ -8,15 +8,42 @@ gsap.registerPlugin(ScrollTrigger);
 function ProcessSection() {
   const headingRef = useRef(null);
   const steps = [
-    'Enquiry',
-    'Meeting',
-    'Analysis',
-    'Finalizing work areas',
-    'Pricing & Agreement',
-    'Analysis of agreed work areas',
-    'Submission of Detailed Plan',
-    'Approval',
-    'Execution',
+   {
+    title: 'Enquiry',
+    description:'Enquire about a product or service, which can be the first step.'
+  },
+  {
+    title: 'Meeting',
+    description:'Let’s meet either physically or virtually to discuss.'
+  },
+  {
+    title: 'Analysis',
+    description:'Analysis is the process of breaking down information, data, or a situation into smaller parts to understand it better.'
+  },
+  {
+    title: 'Analysis of agreed work areas',
+    description:'Examining the specific tasks, responsibilities, or goals that have been agreed upon to ensure clarity, efficiency, and progress.'
+  },
+  {
+    title: 'Pricing & Agreement',
+    description:'Setting a price for a product or service and reaching a formal understanding or contract.'
+  },
+  {
+    title: 'Submission of Detailed Plan',
+    description:'Formally presenting a well-structured and comprehensive outline of a project, task, or proposal for review, approval, or implementation.'
+  },
+  {
+    title: 'Approval',
+    description:'Agreeing to or accepting a plan, proposal, decision, or completed work.'
+  },
+  {
+    title: 'Execution',
+    description:'Putting a plan, task, or strategy into action—in other words, it is where actual work gets done based on what was previously discussed or approved.'
+  },
+  {
+    title: 'Monitoring & Optimization',
+    description:'Tracking performance and then making improvements to ensure better results or efficiency over time.'
+  },
   ];
 
   useEffect(() => {
@@ -66,8 +93,7 @@ function ProcessSection() {
         <div className="section-heading pb-4">
           <h2 ref={headingRef} className="text-white split-text mb-2">Process</h2>
           <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+            Every process is perfectly designed to get the results it gets.
           </p>
         </div>
 
@@ -82,17 +108,16 @@ function ProcessSection() {
 
           <div className="col-md-12 col-lg-8 mb-3">
             <ul className="ProcesslistUl">
-              {steps.map((title, index) => (
+              {steps.map((item, index) => (
                 <li key={index}>
                   <div className="d-flex align-items-center gap-4">
                     <span>
                       {String(index + 1).padStart(2, '0')} <b>Step</b>
                     </span>
                     <div>
-                      <strong>{title}</strong>
+                      <strong>{item?.title}</strong>
                       <p>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                        {item?.description}
                       </p>
                     </div>
                   </div>

@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { config } from "../services/config";
 import styles from "../styles/Admin.module.css";
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 
 const CorporateForm = () => {
   const [formData, setFormData] = useState({
@@ -36,7 +38,48 @@ const CorporateForm = () => {
         details: [{ texts: "", image: null, image_preview: "" }]
       }
   });
-
+  const visionEditor = useEditor({
+    extensions: [StarterKit],
+    content: "",
+    onUpdate: ({ editor }) => {
+      setFormData((prev) => ({
+        ...prev,
+        corporate_identity: {
+          ...prev.corporate_identity,
+          vision_description: editor.getHTML(),
+        },
+      }));
+    },
+  });
+  
+  const missionEditor = useEditor({
+    extensions: [StarterKit],
+    content: "",
+    onUpdate: ({ editor }) => {
+      setFormData((prev) => ({
+        ...prev,
+        corporate_identity: {
+          ...prev.corporate_identity,
+          mission_description: editor.getHTML(),
+        },
+      }));
+    },
+  });
+  
+  const managementEditor = useEditor({
+    extensions: [StarterKit],
+    content: "",
+    onUpdate: ({ editor }) => {
+      setFormData((prev) => ({
+        ...prev,
+        corporate_identity: {
+          ...prev.corporate_identity,
+          management_description: editor.getHTML(),
+        },
+      }));
+    },
+  });
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -44,7 +87,7 @@ const CorporateForm = () => {
           section_name: formData.section_name,
         });
         const data = res.data?.data;
-
+console.log(data)
         if (data) {
           setFormData((prev) => ({
             ...prev,
@@ -56,6 +99,11 @@ const CorporateForm = () => {
               image_preview: data.why_you_need?.image ? `${config.imageurl}/${data.why_you_need.image.replace(/\\/g, "/")}` : ""
             }
           }));
+       
+         visionEditor?.commands.setContent(data?.corporate_identity?.vision_description || "");
+missionEditor?.commands.setContent(data?.corporate_identity?.mission_description || "");
+managementEditor?.commands.setContent(data?.corporate_identity?.management_description || "");
+
         }
       } catch (err) {
         console.error("Error fetching section:", err);
@@ -265,20 +313,30 @@ const CorporateForm = () => {
           <input type="text" name="vision_title" value={formData.corporate_identity.vision_title} onChange={handleFieldChange} />
         </label>
         <label>Vision Description
-          <textarea name="vision_description" value={formData.corporate_identity.vision_description} onChange={handleFieldChange} />
-        </label>
+  <div onClick={() => visionEditor?.commands.focus()} className={styles.tiptapWrapper}>
+    <EditorContent editor={visionEditor} />
+  </div>
+</label>
+
+
         <label>Mission Title
           <input type="text" name="mission_title" value={formData.corporate_identity.mission_title} onChange={handleFieldChange} />
         </label>
         <label>Mission Description
-          <textarea name="mission_description" value={formData.corporate_identity.mission_description} onChange={handleFieldChange} />
-        </label>
+  <div onClick={() => missionEditor?.commands.focus()} className={styles.tiptapWrapper}>
+    <EditorContent editor={missionEditor} />
+  </div>
+</label>
+
         <label>Management Title
           <input type="text" name="management_title" value={formData.corporate_identity.management_title} onChange={handleFieldChange} />
         </label>
         <label>Management Description
-          <textarea name="management_description" value={formData.corporate_identity.management_description} onChange={handleFieldChange} />
-        </label>
+  <div onClick={() => managementEditor?.commands.focus()} className={styles.tiptapWrapper}>
+    <EditorContent editor={managementEditor} />
+  </div>
+</label>
+
 
         <h3 className={styles.fullWidth}>Why You Need</h3>
         <label>Text
