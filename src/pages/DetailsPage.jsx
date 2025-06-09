@@ -38,7 +38,8 @@ function DetailsPage() {
 
   
   const scrollToFooter = () => {
-    footerRef.current?.scrollIntoView({ behavior: 'smooth' });
+   
+    footerRef.current?.scrollIntoView({ behavior: 'instant' });
   };
   useEffect(() => {
     window.history.scrollRestoration = "manual"; // Disable browser native restoration

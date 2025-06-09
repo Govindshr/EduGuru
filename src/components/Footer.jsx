@@ -7,9 +7,9 @@ import { config } from "../admin/services/config";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const Footer = forwardRef((props) => {
+function Footer({ref}) {
   const headingRef = useRef(null);
-
+console.log
   const [formData, setFormData] = useState({
     name: "", phone_number: "", subject: ""
   });
@@ -110,7 +110,7 @@ const Footer = forwardRef((props) => {
   };
 
   return (
-    <footer className="footerMain"  style={{ backgroundImage: "url(images/footer-img.jpg)" }}>
+    <footer className="footerMain" ref={ref}  style={{ backgroundImage: "url(images/footer-img.jpg)" }}>
       <div className="footerTop">
         <div className="container">
           <div className="row flex-row-reverse">
@@ -182,6 +182,6 @@ const Footer = forwardRef((props) => {
       </div>
     </footer>
   );
-});
+};
 
 export default Footer;
