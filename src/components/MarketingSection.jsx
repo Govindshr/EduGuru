@@ -101,13 +101,13 @@ function MarketingSection({ data }) {
               >
                 {selectedCategoryData?.heading || data?.name}
               </h2>
+<figure key={selectedCategoryData?.image || data?.image}>
+  <img
+    src={`${config.imageurl}/${selectedCategoryData?.image || data?.image}`}
+    alt={selectedCategoryData?.image || data?.image}
+  />
+</figure>
 
-              <figure>
-                <img
-                  src={`${config.imageurl}/${selectedCategoryData?.image || data?.image}`}
-                  alt={selectedCategoryData?.image || data?.image}
-                />
-              </figure>
               <div
   dangerouslySetInnerHTML={{
     __html: selectedCategoryData?.description || data?.description || "",
