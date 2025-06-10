@@ -102,11 +102,11 @@ console.log("formdata description",formData.description)
     <div className={styles.formWrapper}>
       <h2>Add Service</h2>
       <form onSubmit={handleSubmit} className={styles.formGrid2Col} encType="multipart/form-data">
-        <label>Name *
-          <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+        <label>Name 
+          <input type="text" name="name" value={formData.name} onChange={handleChange}  />
         </label>
-        <label>Heading *
-          <input type="text" name="heading" value={formData.heading} onChange={handleChange} required />
+        <label>Heading 
+          <input type="text" name="heading" value={formData.heading} onChange={handleChange}  />
         </label>
         <label className={styles.fullWidth}>
   Description
