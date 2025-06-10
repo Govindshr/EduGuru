@@ -9,6 +9,7 @@ import StarterKit from "@tiptap/starter-kit";
 
 const EditPageContent = () => {
   const navigate = useNavigate();
+  const [showContactButton, setShowContactButton] = useState(false); // <-- NEW
   const { id } = useParams();
   const [descriptionLoaded, setDescriptionLoaded] = useState(false);
 
@@ -27,6 +28,8 @@ const EditPageContent = () => {
     area_text: "",
     area_button: "",
     area_route: "",
+     contact_us_enabled: false, // <-- NEW
+  contact_us_label: "",      // <-- NEW
   });
   const descriptionEditor = useEditor({
     extensions: [StarterKit],
@@ -64,7 +67,10 @@ const EditPageContent = () => {
           area_text: data.area_text,
           area_button: data.area_button,
           area_route: data.area_route,
+          contact_us_enabled: data.contact_us_enabled || false,
+  contact_us_label: data.contact_us_label || "",
         });
+        setShowContactButton(data.contact_us_enabled); // <-- NEW
         descriptionEditor?.commands.setContent(data.description || "");
 
 
@@ -89,6 +95,16 @@ const EditPageContent = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
+  const handleCheckboxChange = (e) => {
+  const checked = e.target.checked;
+  setShowContactButton(checked);
+  setFormData((prev) => ({
+    ...prev,
+    contact_us_enabled: checked,
+    contact_us_label: checked ? prev.contact_us_label : "",
+  }));
+};
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -123,6 +139,9 @@ const EditPageContent = () => {
     payload.append("area_text", formData.area_text);
     payload.append("area_button", formData.area_button);
     payload.append("area_route", formData.area_route);
+    payload.append("contact_us_enabled", formData.contact_us_enabled);
+payload.append("contact_us_label", formData.contact_us_label);
+
 
     if (formData.image) payload.append("image", formData.image);
     formData.area_images.forEach((file) => {
@@ -153,7 +172,7 @@ const EditPageContent = () => {
         <h2>Edit Page Content</h2>
         <button
           className={styles.addBtn}
-          onClick={() => navigate("/admin/services-list")}
+          onClick={() => navigate("/admin/page-content-list")}
         >
           Back
         </button>
@@ -217,6 +236,29 @@ const EditPageContent = () => {
             />
           )}
         </label>
+
+        <div className={styles.fullWidth} style={{ display: 'flex', alignItems: 'center', gap: '10px', paddingTop: '10px' }}>
+  <input
+    type="checkbox"
+    id="enableContact"
+    checked={showContactButton}
+    onChange={handleCheckboxChange}
+  />
+  <label htmlFor="enableContact" style={{ margin: 0 }}>Enable Contact Us Button</label>
+</div>
+
+{showContactButton && (
+  <label className={styles.fullWidth}>
+    Contact Button Label
+    <input
+      type="text"
+      name="contact_us_label"
+      value={formData.contact_us_label}
+      onChange={handleChange}
+    />
+  </label>
+)}
+
 
         
 

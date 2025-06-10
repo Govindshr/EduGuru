@@ -51,7 +51,7 @@ function DetailsPage() {
     <>
       <Header2 onContactClick={scrollToFooter}  />
       <InnerBanner  data={data} />
-      <MarketingSection  data={data} />
+      <MarketingSection  data={data} onContactClick={scrollToFooter} />
       <ProcessSection />
       <AreaOfFunction data={data}/>
       <Footer ref={footerRef} />

@@ -6,7 +6,7 @@ import SplitType from "split-type";
 import { config } from "../admin/services/config";
 import { useParams } from "react-router-dom";
 
-function MarketingSection({ data }) {
+function MarketingSection({ data ,onContactClick }) {
   const { id } = useParams();
   const headingRef = useRef(null);
   const [categories, setCategories] = useState([]);
@@ -93,6 +93,7 @@ function MarketingSection({ data }) {
       <div className="container">
         <div className="row">
           <div className="col-lg-8">
+         
             <div className="section-heading text-start">
               <h2
                 ref={headingRef}
@@ -107,7 +108,7 @@ function MarketingSection({ data }) {
     alt={selectedCategoryData?.image || data?.image}
   />
 </figure>
-
+ 
               <div
   dangerouslySetInnerHTML={{
     __html: selectedCategoryData?.description || data?.description || "",
@@ -115,6 +116,17 @@ function MarketingSection({ data }) {
 />
 
             </div>
+            {selectedCategoryData?.contact_us_enabled && selectedCategoryData?.contact_us_enabled==true && <>
+               <div className="container d-flex justify-content-between ">
+ <a onClick={onContactClick} className="btn btn-success">
+          {selectedCategoryData?.contact_us_label}{' '}
+            <i>
+              <img src="/images/arrow-green.svg" alt="Arrow" width="20" />
+            </i>
+          </a>
+          
+          </div>
+          </> }
           </div>
 
           <div className="col-lg-4">

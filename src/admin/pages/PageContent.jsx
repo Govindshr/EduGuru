@@ -9,10 +9,10 @@ import { config } from "../services/config";
 import styles from "../styles/Admin.module.css";
 
 const PageContent = () => {
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
+  const [showContactButton, setShowContactButton] = useState(false);
   const [formData, setFormData] = useState({
-    
     category_id: "",
     heading: "",
     description: "",
@@ -23,8 +23,11 @@ const PageContent = () => {
     area_images: [],
     area_text: "",
     area_button: "",
-    area_route: ""
+    area_route: "",
+    contact_us_enabled: false,
+    contact_us_label: "",
   });
+
   const descriptionEditor = useEditor({
     extensions: [StarterKit],
     content: formData.description,
@@ -35,7 +38,6 @@ const PageContent = () => {
       }));
     },
   });
-  
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -46,7 +48,7 @@ const PageContent = () => {
         console.error("Error fetching services:", error);
       }
     };
-fetchServices()  
+    fetchServices();
   }, []);
 
   const handleChange = (e) => {
@@ -73,10 +75,19 @@ fetchServices()
     }));
   };
 
+  const handleCheckboxChange = (e) => {
+    const checked = e.target.checked;
+    setShowContactButton(checked);
+    setFormData((prev) => ({
+      ...prev,
+      contact_us_enabled: checked,
+      contact_us_label: checked ? prev.contact_us_label : "",
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formPayload = new FormData();
-   
     formPayload.append("category_id", formData.category_id);
     formPayload.append("heading", formData.heading);
     formPayload.append("description", formData.description);
@@ -85,6 +96,8 @@ fetchServices()
     formPayload.append("area_text", formData.area_text);
     formPayload.append("area_button", formData.area_button);
     formPayload.append("area_route", formData.area_route);
+    formPayload.append("contact_us_enabled", formData.contact_us_enabled);
+    formPayload.append("contact_us_label", formData.contact_us_label);
 
     if (formData.image) formPayload.append("image", formData.image);
     formData.area_images.forEach((file) => {
@@ -96,7 +109,7 @@ fetchServices()
         headers: { "Content-Type": "multipart/form-data" },
       });
       alert(res.data.message);
-      navigate("/admin/page-content-list"); // ⬅️ step 3
+      navigate("/admin/page-content-list");
     } catch (err) {
       console.error("Error saving page content:", err);
       alert("Failed to save page content");
@@ -105,33 +118,30 @@ fetchServices()
 
   return (
     <div className={styles.formWrapper}>
-       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <h2>Add Category Data</h2>
-               <button className={styles.addBtn} onClick={() => navigate('/admin/page-content-list')} >Back</button>
-            </div>
-     
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <h2>Add Category Data</h2>
+        <button className={styles.addBtn} onClick={() => navigate('/admin/page-content-list')}>Back</button>
+      </div>
+
       <form onSubmit={handleSubmit} className={styles.formGrid2Col} encType="multipart/form-data">
         <label>Service
           <select name="category_id" className="form-control" value={formData.category_id} onChange={handleChange}>
             <option value="">Select Service</option>
-            {console.log("categories",categories)}
             {categories?.map((cat) => (
               <option key={cat._id} value={cat?._id}>{cat?.name}</option>
             ))}
           </select>
         </label>
+
         <label>Name
           <input type="text" name="heading" value={formData.heading} onChange={handleChange} />
         </label>
-        <label className={styles.fullWidth}>
-  Description
-  <div
-    className={styles.tiptapWrapper}
-    onClick={() => descriptionEditor?.commands.focus()}
-  >
-    <EditorContent editor={descriptionEditor} />
-  </div>
-</label>
+
+        <label className={styles.fullWidth}>Description
+          <div className={styles.tiptapWrapper} onClick={() => descriptionEditor?.commands.focus()}>
+            <EditorContent editor={descriptionEditor} />
+          </div>
+        </label>
 
         <label className={styles.fullWidth}>Image
           <input type="file" accept="image/*" onChange={handleImageChange} />
@@ -139,6 +149,24 @@ fetchServices()
             <img src={formData.image_preview} alt="preview" className={styles.inlinePreviewLarge} />
           )}
         </label>
+
+        <div className={styles.fullWidth} style={{ display: 'flex', alignItems: 'center', gap: '10px', paddingTop: '10px' }}>
+          <input type="checkbox" id="enableContact" checked={showContactButton} onChange={handleCheckboxChange} />
+          <label htmlFor="enableContact" style={{ margin: 0 }}>Enable Contact Us Button</label>
+        </div>
+
+        {showContactButton && (
+          <label className={styles.fullWidth}>
+            Contact Button Label
+            <input
+              type="text"
+              name="contact_us_label"
+              value={formData.contact_us_label}
+              onChange={handleChange}
+            />
+          </label>
+        )}
+
         <button type="submit" className={`${styles.submitBtn} ${styles.fullWidth}`}>Submit</button>
       </form>
     </div>
