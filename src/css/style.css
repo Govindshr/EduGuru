@@ -515,7 +515,7 @@ li {
     position: absolute;
     bottom: -20px;
     left: 30px;
-    padding: 13px 20px;
+    padding: 20px 20px;
     transition: .4s all;
 }
 
@@ -811,16 +811,17 @@ li {
 }
 
 .innerHeader.fixed {
-    background-color: #1b1b1d;
+    background-color:#FFF;
 }
 
 .innerbanner {
-    min-height: 300px;
-    padding: 150px 0;
+    min-height: 200px;
+    padding: 100px 0;
     background-position: center !important;
     background-size: cover !important;
     position: relative;
     z-index: 1;
+    margin-top: 65px;
 }
 
 .innerbanner:after {
@@ -1726,4 +1727,25 @@ li {
     width: 150px;
     height: 164px;
     object-fit: cover;
+}
+.captcha-label {
+  font-size: 14px;
+  color: white;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.captcha-input {
+  width: 100%;
+  padding: 10px 16px;
+  border-radius: 30px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: border 0.3s ease;
+  font-size: 16px;
+}
+
+.captcha-input:focus {
+  border-color: #2196f3;
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.3);
 }

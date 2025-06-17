@@ -71,6 +71,15 @@ function MarketingSection({ data ,onContactClick }) {
     handleCategorySelect(category?._id);
   };
 
+  useEffect(() => {
+  const delayDebounce = setTimeout(() => {
+    fetchCategories(searchTerm);
+  }, 300); // 300ms delay
+
+  return () => clearTimeout(delayDebounce);
+}, [searchTerm]);
+
+
   const handleSearch = (e) => {
     e.preventDefault();
     fetchCategories(searchTerm, false);
@@ -140,34 +149,37 @@ function MarketingSection({ data ,onContactClick }) {
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <a style={{ cursor: "pointer" }} onClick={handleSearch}>
-                  <img src="images/search-icon.svg" alt="Search" width="20" />
-                </a>
+               <a style={{ cursor: "pointer" }}>
+  <img src="images/search-icon.svg" alt="Search" width="20" />
+</a>
               </form>
               <hr className="my-3" />
               <span>Categories</span>
-              <ul className="categoriesUl">
-                {categories?.map((category, index) => (
-                  <li key={index}>
-                    <a
-                      href="#"
-                      className={
-                        category._id === activeCategoryId ? "active" : ""
-                      }
-                      onClick={(e) => handleClick(e, category)}
-                    >
-                      {category?.heading}
-                      <figure>
-                        <img
-                          src="images/arrow-normal-icon.svg"
-                          alt="Arrow"
-                          width="20"
-                        />
-                      </figure>
-                    </a>
-                  </li>
-                ))}
-              </ul>
+             {categories?.length > 0 ? (
+  <ul className="categoriesUl">
+    {categories.map((category, index) => (
+      <li key={index}>
+        <a
+          href="#"
+          className={category._id === activeCategoryId ? "active" : ""}
+          onClick={(e) => handleClick(e, category)}
+        >
+          {category?.heading}
+          <figure>
+            <img
+              src="images/arrow-normal-icon.svg"
+              alt="Arrow"
+              width="20"
+            />
+          </figure>
+        </a>
+      </li>
+    ))}
+  </ul>
+) : (
+  <div className="text-muted mt-2">No matching categories found.</div>
+)}
+
             </div>
           </div>
         </div>

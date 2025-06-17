@@ -106,7 +106,7 @@ function Portfolio() {
                 </figure>
                 <a className="portfolioTxt" onClick={() => navigate(`/details-page/${item?._id}`)}>
                   <h3>
-                    <b>{item.heading}</b> {item.name}
+                    <b></b>{item.name}
                   </h3>
                   <span>
                     <img src="/images/arrow-white.svg" alt="Arrow" />

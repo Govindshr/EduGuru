@@ -23,7 +23,7 @@ function Header2({ onContactClick , data}) {
       <nav className="navbar">
         <div className="container d-flex justify-content-between align-items-center">
           <a className="navbar-brand" style={{ cursor: 'pointer' }} onClick={handleLogoClick}>
-            <img src="images/logo-white.svg" alt="EduGuru Logo" width="130" />
+            <img src="images/logo.svg" alt="EduGuru Logo" width="130" />
           </a>
           <a onClick={onContactClick} className="btn btn-success">
             Contact Us{' '}

@@ -12,9 +12,10 @@ const SkillsSection = () => {
     heading: "Expertise We Offer",
     image: null,
     description: "We specialize in multiple domains with strong expertise.",
-    details: [
-      { skill_name: "JavaScript", rating_value: "5" },
-    ],
+   details: [
+  { skill_name: "JavaScript", rating_value: "5", image: null, image_preview: "" },
+]
+
   });
 
   useEffect(() => {
@@ -31,7 +32,12 @@ const SkillsSection = () => {
             title: data.title || "",
             heading: data.heading || "",
             description: data.description || "",
-            details: data.details || [],
+            details: data.details?.map((d) => ({
+  ...d,
+  image: null,
+  image_preview: d.image ? `${config.imageurl}/${d.image.replace(/\\/g, '/')}` : "",
+})) || [],
+
             image_preview: data.cover_image ? `${config.imageurl}/${data.cover_image.replace(/\\/g, "/")}` : "",
           }));
         }
@@ -47,6 +53,15 @@ const SkillsSection = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+const handleDetailImageChange = (index, e) => {
+  const file = e.target.files[0];
+  if (file) {
+    const updated = [...formData.details];
+    updated[index].image = file;
+    updated[index].image_preview = URL.createObjectURL(file);
+    setFormData((prev) => ({ ...prev, details: updated }));
+  }
+};
 
   const handleDetailChange = (index, e) => {
     const { name, value } = e.target;
@@ -67,27 +82,50 @@ const SkillsSection = () => {
     setFormData((prev) => ({ ...prev, details: updatedDetails }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const formPayload = new FormData();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    formPayload.append("section_name", formData.section_name);
-    formPayload.append("title", formData.title);
-    formPayload.append("heading", formData.heading);
-    formPayload.append("description", formData.description);
-    formPayload.append("details", JSON.stringify(formData.details));
-    if (formData.image) formPayload.append("cover_image", formData.image);
+  const formPayload = new FormData();
 
-    try {
-      const res = await axios.post(config.UpdateWhatWeAre, formPayload, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      alert(res.data.message);
-    } catch (err) {
-      console.error("Error saving skills section:", err);
-      alert("Failed to save skills section");
+  formPayload.append("section_name", formData.section_name);
+  formPayload.append("title", formData.title);
+  formPayload.append("heading", formData.heading);
+  formPayload.append("description", formData.description);
+
+  if (formData.image) {
+    formPayload.append("cover_image", formData.image);
+  }
+
+  // prepare details JSON without image and image_preview
+  const detailsData = formData.details.map(({ image, image_preview, ...rest }, index) => {
+    if (!image && image_preview) {
+      // retain image path if no new file selected
+      rest.image = image_preview.replace(config.imageurl + "/", "");
     }
-  };
+    return rest;
+  });
+
+  formPayload.append("details", JSON.stringify(detailsData));
+
+  // only new files are appended as binary data
+  formData.details.forEach((d) => {
+    if (d.image) {
+      formPayload.append("details_image", d.image);
+    }
+  });
+
+  try {
+    const res = await axios.post(config.UpdateWhatWeAre, formPayload, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    alert(res.data.message);
+  } catch (err) {
+    console.error("Error saving skills section:", err);
+    alert("Failed to save skills section");
+  }
+};
+
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -140,6 +178,13 @@ const SkillsSection = () => {
                   onChange={(e) => handleDetailChange(idx, e)}
                 />
               </label>
+              <label className={styles.fullWidth}>Image
+  <input type="file" accept="image/*" onChange={(e) => handleDetailImageChange(idx, e)} />
+  {detail.image_preview && (
+    <img src={detail.image_preview} alt="preview" className={styles.inlinePreview} />
+  )}
+</label>
+
               <button type="button" onClick={() => removeDetail(idx)} className={styles.iconDeleteBtn}>
                 <Trash2 size={18} />
               </button>

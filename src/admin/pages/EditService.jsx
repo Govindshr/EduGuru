@@ -136,13 +136,13 @@ const EditService = () => {
         className={styles.formGrid2Col}
         encType="multipart/form-data"
       >
-        <label>Name *
-          <input type="text" name="name" value={formData.name} onChange={handleChange} required />
-        </label>
+       <label>Name
+  <input type="text" name="name" value={formData.name} onChange={handleChange} />
+</label>
 
-        <label>Heading *
-          <input type="text" name="heading" value={formData.heading} onChange={handleChange} required />
-        </label>
+        <label>Heading
+  <input type="text" name="heading" value={formData.heading} onChange={handleChange} />
+</label>
 
         <label className={styles.fullWidth}>
           Description

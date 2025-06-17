@@ -89,7 +89,7 @@ function Skills() {
                   <div className="col-md-6 mb-3" key={index}>
                     <div className="skillContent">
                       <figure>
-                        <img src="/images/skill-icon1.svg" alt="" />
+                        <img src={`${config.imageurl}/${skill?.image}`} alt="" />
                       </figure>
                       <div className="skilltext">
                         <strong>{skill?.skill_name}</strong>
