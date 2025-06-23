@@ -126,7 +126,7 @@ function MarketingSection({ data ,onContactClick }) {
 
             </div>
             {selectedCategoryData?.contact_us_enabled && selectedCategoryData?.contact_us_enabled==true && <>
-               <div className="container d-flex justify-content-between ">
+               <div >
  <a onClick={onContactClick} className="btn btn-success">
           {selectedCategoryData?.contact_us_label}{' '}
             <i>

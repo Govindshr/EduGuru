@@ -7,11 +7,23 @@ import { config } from "../admin/services/config";
 
 gsap.registerPlugin(ScrollTrigger);
 
-function Footer({ref}) {
+function Footer({ ref }) {
   const headingRef = useRef(null);
-console.log
+  const [captcha, setCaptcha] = useState({ question: "", answer: "" });
+  const [captchaInput, setCaptchaInput] = useState("");
+
+  useEffect(() => {
+    const num1 = Math.floor(Math.random() * 10);
+    const num2 = Math.floor(Math.random() * 10);
+    setCaptcha({
+      question: `What is ${num1} + ${num2}?`,
+      answer: String(num1 + num2),
+    });
+  }, []);
   const [formData, setFormData] = useState({
-    name: "", phone_number: "", subject: ""
+    name: "",
+    phone_number: "",
+    subject: "",
   });
   const [status, setStatus] = useState({ message: "", type: "" });
 
@@ -41,7 +53,9 @@ console.log
             twitter_link: data.twitter_link || "",
             linkedin_link: data.linkedin_link || "",
             image: null,
-            image_preview: data.image ? `${config.imageurl}/${data.image.replace(/\\/g, '/')}` : ""
+            image_preview: data.image
+              ? `${config.imageurl}/${data.image.replace(/\\/g, "/")}`
+              : "",
           }));
         }
       } catch (err) {
@@ -94,15 +108,22 @@ console.log
 
   const handleSubmit = async () => {
     const { name, phone_number, subject } = formData;
-    if (!name || !phone_number || !subject) {
-      setStatus({ message: "Please fill all required fields.", type: "error" });
+
+    if (!name || !phone_number || !subject || captchaInput !== captcha.answer) {
+      setStatus({
+        message: "Please fill all fields and solve the captcha correctly.",
+        type: "error",
+      });
       return;
     }
 
     try {
       const res = await axios.post(config.SaveQuery, formData);
       setFormData({ name: "", phone_number: "", subject: "" });
-      setStatus({ message: res.data.message || "Submitted successfully!", type: "success" });
+      setStatus({
+        message: res.data.message || "Submitted successfully!",
+        type: "success",
+      });
     } catch (error) {
       console.error("Error submitting query:", error);
       setStatus({ message: "Failed to submit query.", type: "error" });
@@ -110,7 +131,11 @@ console.log
   };
 
   return (
-    <footer className="footerMain" ref={ref}  style={{ backgroundImage: "url(images/footer-img.jpg)" }}>
+    <footer
+      className="footerMain"
+      ref={ref}
+      style={{ backgroundImage: "url(images/footer-img.jpg)" }}
+    >
       <div className="footerTop">
         <div className="container">
           <div className="row flex-row-reverse">
@@ -120,30 +145,78 @@ console.log
                   <img src="/images/footer-bg.svg" alt="" />
                 </div>
                 <span>{formData?.title}</span>
-                <h2 ref={headingRef} className="split-text">{formData?.heading}</h2>
+                <h2 ref={headingRef} className="split-text">
+                  {formData?.heading}
+                </h2>
                 <p>{formData?.description}</p>
                 <form>
                   <div className="row">
                     <div className="col-md-6 mb-3">
-                      <input type="text" className="form-control" placeholder="NAME" name="name" value={formData.name} onChange={handleChange} required />
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="NAME"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                      />
                     </div>
                     <div className="col-md-6 mb-3">
-                      <input type="number" className="form-control" placeholder="Phone Number" name="phone_number" value={formData.phone_number} onChange={handleChange} required />
+                      <input
+                        type="number"
+                        className="form-control"
+                        placeholder="Phone Number"
+                        name="phone_number"
+                        value={formData.phone_number}
+                        onChange={handleChange}
+                        required
+                      />
                     </div>
                     <div className="col-md-12 mb-3">
-                      <input type="text" className="form-control" placeholder="SUBJECT" name="subject" value={formData.subject} onChange={handleChange} required />
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="SUBJECT"
+                        name="subject"
+                        value={formData.subject}
+                        onChange={handleChange}
+                        required
+                      />
                     </div>
+                    <div className="col-md-12 mb-3">
+                      <label className="form-label mb-2 fw-bold text-white">
+                        {captcha.question}
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control rounded border px-3 py-2"
+                        placeholder="Enter your answer"
+                        value={captchaInput}
+                        onChange={(e) => setCaptchaInput(e.target.value)}
+                        required
+                      />
+                    </div>
+
                     <div className="col-md-12">
                       <div className="StartCouncilGroup">
-                        <button type="button" className="startBtn" onClick={handleSubmit}>
+                        <button
+                          type="button"
+                          className="startBtn"
+                          onClick={handleSubmit}
+                        >
                           Start Consulting
                         </button>
+
+                        {status.message && (
+                          <div
+                            className="d-flex justify-content-center"
+                            style={{ marginTop: "5px", color: "white" }}
+                          >
+                            {status.message}
+                          </div>
+                        )}
                       </div>
-                      {status.message && (
-                        <div style={{ marginTop: "10px", color: "white" }}>
-                          {status.message}
-                        </div>
-                      )}
                     </div>
                   </div>
                 </form>
@@ -166,15 +239,39 @@ console.log
               <figure>
                 <img src="/images/logo-white.svg" alt="" width="100" />
               </figure>
-              <p><img src="/images/email.svg" alt="" width="15" className="me-2" /> {formData.email}</p>
-              <p><img src="/images/call.svg" alt="" width="15" className="me-2" /> {formData.mobile_number}</p>
+              <p>
+                <img
+                  src="/images/email.svg"
+                  alt=""
+                  width="15"
+                  className="me-2"
+                />{" "}
+                {formData.email}
+              </p>
+              <p>
+                <img
+                  src="/images/call.svg"
+                  alt=""
+                  width="15"
+                  className="me-2"
+                />{" "}
+                {formData.mobile_number}
+              </p>
             </div>
             <div className="col-md-6">
               <div className="footerSocila">
-                <a href={formData.fb_link}><img src="/images/facebook-icon.svg" alt="" /></a>
-                <a href={formData.insta_link}><img src="/images/instagram-icon.svg" alt="" /></a>
-                <a href={formData.twitter_link}><img src="/images/twitter-white.svg" alt="" /></a>
-                <a href={formData.linkedin_link}><img src="/images/linkedin-white.svg" alt="" /></a>
+                <a href={formData.fb_link}>
+                  <img src="/images/facebook-icon.svg" alt="" />
+                </a>
+                <a href={formData.insta_link}>
+                  <img src="/images/instagram-icon.svg" alt="" />
+                </a>
+                <a href={formData.twitter_link}>
+                  <img src="/images/twitter-white.svg" alt="" />
+                </a>
+                <a href={formData.linkedin_link}>
+                  <img src="/images/linkedin-white.svg" alt="" />
+                </a>
               </div>
             </div>
           </div>
@@ -182,6 +279,6 @@ console.log
       </div>
     </footer>
   );
-};
+}
 
 export default Footer;
