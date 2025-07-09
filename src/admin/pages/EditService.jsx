@@ -4,8 +4,9 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { config } from "../services/config";
 import styles from "../styles/Admin.module.css";
-import { EditorContent, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+
 
 const EditService = () => {
   const navigate = useNavigate();
@@ -27,21 +28,13 @@ const EditService = () => {
     image_preview: "",
   });
 
-  const descriptionEditor = useEditor({
-    extensions: [StarterKit],
-    content: "",
-    onUpdate: ({ editor }) => {
-      setFormData((prev) => ({ ...prev, description: editor.getHTML() }));
-    },
-  });
+const handleDescriptionChange = (value) => {
+  setFormData((prev) => ({ ...prev, description: value }));
+};
 
-  const areaDescriptionEditor = useEditor({
-    extensions: [StarterKit],
-    content: "",
-    onUpdate: ({ editor }) => {
-      setFormData((prev) => ({ ...prev, area_description: editor.getHTML() }));
-    },
-  });
+const handleAreaDescriptionChange = (value) => {
+  setFormData((prev) => ({ ...prev, area_description: value }));
+};
 
   useEffect(() => {
     const fetchService = async () => {
@@ -64,8 +57,7 @@ const EditService = () => {
         });
         setPreviewAreaImages(data.area_images || []);
 
-        descriptionEditor?.commands.setContent(data.description || "");
-        areaDescriptionEditor?.commands.setContent(data.area_description || "");
+      
       } catch (err) {
         console.error("Error fetching service:", err);
         alert("Failed to load service data");
@@ -73,7 +65,7 @@ const EditService = () => {
     };
 
     fetchService();
-  }, [id, descriptionEditor, areaDescriptionEditor]);
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -144,12 +136,16 @@ const EditService = () => {
   <input type="text" name="heading" value={formData.heading} onChange={handleChange} />
 </label>
 
-        <label className={styles.fullWidth}>
-          Description
-          <div className={styles.tiptapWrapper} onClick={() => descriptionEditor?.commands.focus()}>
-            <EditorContent editor={descriptionEditor} />
-          </div>
-        </label>
+      <label className={styles.fullWidth}>
+  Description
+  <ReactQuill
+    theme="snow"
+    value={formData.description}
+    onChange={handleDescriptionChange}
+    style={{ backgroundColor: "#fff" }}
+  />
+</label>
+
 
         <label>Type *
           <select name="type" value={formData.type} onChange={handleChange} className={styles.selectDropdown} required>
@@ -188,12 +184,16 @@ const EditService = () => {
           <input type="text" name="area_heading" value={formData.area_heading} onChange={handleChange} />
         </label>
 
-        <label className={styles.fullWidth}>
-          Area Of Function Description
-          <div className={styles.tiptapWrapper} onClick={() => areaDescriptionEditor?.commands.focus()}>
-            <EditorContent editor={areaDescriptionEditor} />
-          </div>
-        </label>
+       <label className={styles.fullWidth}>
+  Area Of Function Description
+  <ReactQuill
+    theme="snow"
+    value={formData.area_description}
+    onChange={handleAreaDescriptionChange}
+    style={{ backgroundColor: "#fff" }}
+  />
+</label>
+
 
         <label>Area Of Function Right Top Text
           <input type="text" name="area_text" value={formData.area_text} onChange={handleChange} />

@@ -4,8 +4,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { config } from "../services/config";
 import styles from "../styles/Admin.module.css";
-import { EditorContent, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+
 
 const AddService = () => {
   const navigate = useNavigate(); // ⬅️ step 1
@@ -24,27 +25,14 @@ const AddService = () => {
     image_preview: "",
   });
 
-  const editor = useEditor({
-    extensions: [StarterKit],
-    content: formData.description,
-    onUpdate: ({ editor }) => {
-      setFormData((prev) => ({
-        ...prev,
-        description: editor.getHTML(),
-      }));
-    },
-  });
+const handleDescriptionChange = (value) => {
+  setFormData((prev) => ({ ...prev, description: value }));
+};
 
-  const areaDescEditor = useEditor({
-    extensions: [StarterKit],
-    content: formData.area_description,
-    onUpdate: ({ editor }) => {
-      setFormData((prev) => ({
-        ...prev,
-        area_description: editor.getHTML(),
-      }));
-    },
-  });
+const handleAreaDescriptionChange = (value) => {
+  setFormData((prev) => ({ ...prev, area_description: value }));
+};
+
   
   
   const handleChange = (e) => {
@@ -110,13 +98,14 @@ console.log("formdata description",formData.description)
         </label>
         <label className={styles.fullWidth}>
   Description
-  <div
-    className={styles.tiptapWrapper}
-    onClick={() => editor?.commands.focus()} // ✅ make whole box clickable
-  >
-    <EditorContent editor={editor} />
-  </div>
+  <ReactQuill
+    theme="snow"
+    value={formData.description}
+    onChange={handleDescriptionChange}
+    style={{ backgroundColor: "#fff" }}
+  />
 </label>
+
 
 
         <label>Type *
@@ -153,15 +142,16 @@ console.log("formdata description",formData.description)
                   <input type="text" name="area_text" value={formData.area_text} onChange={handleChange} />
                 </label>
 
-                <label className={styles.fullWidth}>
+             <label className={styles.fullWidth}>
   Area Of Function Description
-  <div
-    className={styles.tiptapWrapper}
-    onClick={() => areaDescEditor?.commands.focus()}
-  >
-    <EditorContent editor={areaDescEditor} />
-  </div>
+  <ReactQuill
+    theme="snow"
+    value={formData.area_description}
+    onChange={handleAreaDescriptionChange}
+    style={{ backgroundColor: "#fff" }}
+  />
 </label>
+
 
 
                

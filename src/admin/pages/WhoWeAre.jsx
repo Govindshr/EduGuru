@@ -3,8 +3,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { config } from "../services/config";
 import styles from "../styles/Admin.module.css";
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+
 
 const CorporateForm = () => {
   const [formData, setFormData] = useState({
@@ -38,47 +39,36 @@ const CorporateForm = () => {
         details: [{ texts: "", image: null, image_preview: "" }]
       }
   });
-  const visionEditor = useEditor({
-    extensions: [StarterKit],
-    content: "",
-    onUpdate: ({ editor }) => {
-      setFormData((prev) => ({
-        ...prev,
-        corporate_identity: {
-          ...prev.corporate_identity,
-          vision_description: editor.getHTML(),
-        },
-      }));
+const handleVisionChange = (value) => {
+  setFormData((prev) => ({
+    ...prev,
+    corporate_identity: {
+      ...prev.corporate_identity,
+      vision_description: value,
     },
-  });
-  
-  const missionEditor = useEditor({
-    extensions: [StarterKit],
-    content: "",
-    onUpdate: ({ editor }) => {
-      setFormData((prev) => ({
-        ...prev,
-        corporate_identity: {
-          ...prev.corporate_identity,
-          mission_description: editor.getHTML(),
-        },
-      }));
+  }));
+};
+
+const handleMissionChange = (value) => {
+  setFormData((prev) => ({
+    ...prev,
+    corporate_identity: {
+      ...prev.corporate_identity,
+      mission_description: value,
     },
-  });
-  
-  const managementEditor = useEditor({
-    extensions: [StarterKit],
-    content: "",
-    onUpdate: ({ editor }) => {
-      setFormData((prev) => ({
-        ...prev,
-        corporate_identity: {
-          ...prev.corporate_identity,
-          management_description: editor.getHTML(),
-        },
-      }));
+  }));
+};
+
+const handleManagementChange = (value) => {
+  setFormData((prev) => ({
+    ...prev,
+    corporate_identity: {
+      ...prev.corporate_identity,
+      management_description: value,
     },
-  });
+  }));
+};
+
   
   useEffect(() => {
     const fetchData = async () => {
@@ -100,10 +90,7 @@ console.log(data)
             }
           }));
        
-         visionEditor?.commands.setContent(data?.corporate_identity?.vision_description || "");
-missionEditor?.commands.setContent(data?.corporate_identity?.mission_description || "");
-managementEditor?.commands.setContent(data?.corporate_identity?.management_description || "");
-
+      
         }
       } catch (err) {
         console.error("Error fetching section:", err);
@@ -312,30 +299,45 @@ managementEditor?.commands.setContent(data?.corporate_identity?.management_descr
         <label>Vision Title
           <input type="text" name="vision_title" value={formData.corporate_identity.vision_title} onChange={handleFieldChange} />
         </label>
-        <label>Vision Description
-  <div onClick={() => visionEditor?.commands.focus()} className={styles.tiptapWrapper}>
-    <EditorContent editor={visionEditor} />
-  </div>
+       <label className={styles.fullWidth}>
+  Vision Description
+  <ReactQuill
+    theme="snow"
+    value={formData.corporate_identity.vision_description}
+    onChange={handleVisionChange}
+    style={{ backgroundColor: "#fff" }}
+  />
 </label>
+
 
 
         <label>Mission Title
           <input type="text" name="mission_title" value={formData.corporate_identity.mission_title} onChange={handleFieldChange} />
         </label>
-        <label>Mission Description
-  <div onClick={() => missionEditor?.commands.focus()} className={styles.tiptapWrapper}>
-    <EditorContent editor={missionEditor} />
-  </div>
+       <label className={styles.fullWidth}>
+  Mission Description
+  <ReactQuill
+    theme="snow"
+    value={formData.corporate_identity.mission_description}
+    onChange={handleMissionChange}
+    style={{ backgroundColor: "#fff" }}
+  />
 </label>
+
 
         <label>Management Title
           <input type="text" name="management_title" value={formData.corporate_identity.management_title} onChange={handleFieldChange} />
         </label>
-        <label>Management Description
-  <div onClick={() => managementEditor?.commands.focus()} className={styles.tiptapWrapper}>
-    <EditorContent editor={managementEditor} />
-  </div>
+        <label className={styles.fullWidth}>
+  Management Description
+  <ReactQuill
+    theme="snow"
+    value={formData.corporate_identity.management_description}
+    onChange={handleManagementChange}
+    style={{ backgroundColor: "#fff" }}
+  />
 </label>
+
 
 
         <h3 className={styles.fullWidth}>Why You Need</h3>

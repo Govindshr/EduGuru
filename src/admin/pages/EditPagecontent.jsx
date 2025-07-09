@@ -4,8 +4,8 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { config } from "../services/config";
 import styles from "../styles/Admin.module.css";
-import { EditorContent, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const EditPageContent = () => {
   const navigate = useNavigate();
@@ -31,17 +31,13 @@ const EditPageContent = () => {
      contact_us_enabled: false, // <-- NEW
   contact_us_label: "",      // <-- NEW
   });
-  const descriptionEditor = useEditor({
-    extensions: [StarterKit],
-    content: formData.description,
-    onUpdate: ({ editor }) => {
-      setFormData((prev) => ({
-        ...prev,
-        description: editor.getHTML(),
-      }));
-    },
-  });
-  
+const handleDescriptionChange = (value) => {
+  setFormData((prev) => ({
+    ...prev,
+    description: value,
+  }));
+};
+
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
@@ -71,7 +67,7 @@ const EditPageContent = () => {
   contact_us_label: data.contact_us_label || "",
         });
         setShowContactButton(data.contact_us_enabled); // <-- NEW
-        descriptionEditor?.commands.setContent(data.description || "");
+      
 
 
         setPreviewAreaImages(data.area_images || []); // ⬅️ NEW
@@ -83,13 +79,7 @@ const EditPageContent = () => {
 
     fetchInitialData();
   }, [id]);
-  useEffect(() => {
-    if (descriptionEditor && !descriptionLoaded && formData.description) {
-      descriptionEditor.commands.setContent(formData.description);
-      setDescriptionLoaded(true);
-    }
-  }, [descriptionEditor, formData.description, descriptionLoaded]);
-  
+ 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -169,7 +159,7 @@ payload.append("contact_us_label", formData.contact_us_label);
           alignItems: "center",
         }}
       >
-        <h2>Edit Page Content</h2>
+        <h2>Edit Page Content </h2>
         <button
           className={styles.addBtn}
           onClick={() => navigate("/admin/page-content-list")}
@@ -210,15 +200,16 @@ payload.append("contact_us_label", formData.contact_us_label);
           />
         </label>
 
-        <label className={styles.fullWidth}>
+       <label className={styles.fullWidth}>
   Description
-  <div
-    className={styles.tiptapWrapper}
-    onClick={() => descriptionEditor?.commands.focus()}
-  >
-    <EditorContent editor={descriptionEditor} />
-  </div>
+  <ReactQuill
+    theme="snow"
+    value={formData.description}
+    onChange={handleDescriptionChange}
+    style={{ backgroundColor: "#fff" }}
+  />
 </label>
+
 
 
         <label className={styles.fullWidth}>

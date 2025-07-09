@@ -2,8 +2,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { EditorContent, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+
 
 import { config } from "../services/config";
 import styles from "../styles/Admin.module.css";
@@ -28,16 +29,13 @@ const PageContent = () => {
     contact_us_label: "",
   });
 
-  const descriptionEditor = useEditor({
-    extensions: [StarterKit],
-    content: formData.description,
-    onUpdate: ({ editor }) => {
-      setFormData((prev) => ({
-        ...prev,
-        description: editor.getHTML(),
-      }));
-    },
-  });
+const handleDescriptionChange = (value) => {
+  setFormData((prev) => ({
+    ...prev,
+    description: value,
+  }));
+};
+
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -137,11 +135,15 @@ const PageContent = () => {
           <input type="text" name="heading" value={formData.heading} onChange={handleChange} />
         </label>
 
-        <label className={styles.fullWidth}>Description
-          <div className={styles.tiptapWrapper} onClick={() => descriptionEditor?.commands.focus()}>
-            <EditorContent editor={descriptionEditor} />
-          </div>
-        </label>
+      <label className={styles.fullWidth}>
+  Description
+  <ReactQuill
+    theme="snow"
+    value={formData.description}
+    onChange={handleDescriptionChange}
+    style={{ backgroundColor: "#fff" }}
+  />
+</label>
 
         <label className={styles.fullWidth}>Image
           <input type="file" accept="image/*" onChange={handleImageChange} />

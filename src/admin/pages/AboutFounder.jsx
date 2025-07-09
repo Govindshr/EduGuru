@@ -3,8 +3,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { config } from "../services/config";
 import styles from "../styles/Admin.module.css";
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+
 const AboutFounder = () => {
   const [formData, setFormData] = useState({
     section_name: "about_founder",
@@ -15,22 +16,14 @@ const AboutFounder = () => {
     profileImagePreview: ""
   });
 
-  // Add before return
-const headingEditor = useEditor({
-  extensions: [StarterKit],
-  content: "",
-  onUpdate: ({ editor }) => {
-    setFormData((prev) => ({ ...prev, heading: editor.getHTML() }));
-  },
-});
+const handleHeadingChange = (value) => {
+  setFormData((prev) => ({ ...prev, heading: value }));
+};
 
-const subheadingEditor = useEditor({
-  extensions: [StarterKit],
-  content: "",
-  onUpdate: ({ editor }) => {
-    setFormData((prev) => ({ ...prev, subheading: editor.getHTML() }));
-  },
-});
+const handleSubheadingChange = (value) => {
+  setFormData((prev) => ({ ...prev, subheading: value }));
+};
+
 
   useEffect(() => {
     const fetchSection = async () => {
@@ -48,9 +41,7 @@ const subheadingEditor = useEditor({
             profileImage: null,
             profileImagePreview: data.profile_image ? `${config.imageurl}/${data.profile_image.replace(/\\/g, '/')}` : ""
           }));
-          // Inside useEffect after fetch
-headingEditor?.commands.setContent(data.heading || "");
-subheadingEditor?.commands.setContent(data.subheading || "");
+          
         }
       } catch (err) {
         console.error("Error fetching main banner:", err);
@@ -103,17 +94,26 @@ subheadingEditor?.commands.setContent(data.subheading || "");
         <label>Name
           <input type="text" name="title" value={formData.title} onChange={handleChange} />
         </label>
-        <label>Upper Description
-  <div className={styles.tiptapWrapper} onClick={() => headingEditor?.commands.focus()}>
-    <EditorContent editor={headingEditor} />
-  </div>
+        <label className={styles.fullWidth}>
+  Upper Description
+  <ReactQuill
+    theme="snow"
+    value={formData.heading}
+    onChange={handleHeadingChange}
+    style={{ backgroundColor: "#fff" }}
+  />
 </label>
 
-<label>Lower Description
-  <div className={styles.tiptapWrapper} onClick={() => subheadingEditor?.commands.focus()}>
-    <EditorContent editor={subheadingEditor} />
-  </div>
+<label className={styles.fullWidth}>
+  Lower Description
+  <ReactQuill
+    theme="snow"
+    value={formData.subheading}
+    onChange={handleSubheadingChange}
+    style={{ backgroundColor: "#fff" }}
+  />
 </label>
+
 
        
         <label>Profile Image
