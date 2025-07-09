@@ -103,7 +103,7 @@ function DesignSolution( {ref}) {
                       <img src={`${config.imageurl}/${item.icon}`} alt="" />
                     </i>
                   </figure>
-                  <h3>{item.name}</h3>
+                  {/* <h3>{item.name} </h3> */}
                   <a href="">
                     {item.heading}
                     <img src="/images/arrow-gray.svg" alt="" />
