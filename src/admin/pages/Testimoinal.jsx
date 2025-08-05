@@ -69,12 +69,21 @@ const Testimonials = () => {
     }
   };
 
-  const handleDetailChange = (index, e) => {
-    const { name, value } = e.target;
-    const updated = [...formData.details];
+ const handleDetailChange = (index, e) => {
+  const { name, value } = e.target;
+  const updated = [...formData.details];
+
+  if (name === "rating") {
+    let ratingValue = parseInt(value, 10);
+    if (ratingValue > 5) ratingValue = 5;
+    if (ratingValue < 0) ratingValue = 0;
+    updated[index][name] = ratingValue;
+  } else {
     updated[index][name] = value;
-    setFormData((prev) => ({ ...prev, details: updated }));
-  };
+  }
+
+  setFormData((prev) => ({ ...prev, details: updated }));
+};
 
   const handleDetailImageChange = (index, e) => {
     const file = e.target.files[0];
@@ -107,12 +116,21 @@ const Testimonials = () => {
     formPayload.append("heading", formData.heading);
     if (formData.cover_image) formPayload.append("cover_image", formData.cover_image);
 
-    const detailsData = formData.details.map(({ image, image_preview, ...rest }) => rest);
-    formPayload.append("details", JSON.stringify(detailsData));
+    const detailMeta = formData.details.map(({ image, image_preview, ...rest }) => ({
+      ...rest,
+      image: rest.image || image_preview.replace(config.imageurl + "/", "")
+    }));
+    
+        formPayload.append("details", JSON.stringify(detailMeta));
 
-    formData.details.forEach((d) => {
-      if (d.image) formPayload.append("details_image", d.image);
-    });
+ formData.details.forEach((d) => {
+  if (d.image instanceof File) {
+    formPayload.append("details_image", d.image);
+  } else {
+    formPayload.append("details_image", new Blob()); // placeholder to maintain index
+  }
+});
+
 
     try {
       const res = await axios.post(config.UpdateWhatWeAre, formPayload, {
@@ -144,17 +162,18 @@ const Testimonials = () => {
         <div className={styles.fullWidth}>
           <h3>Details</h3>
           {formData.details.map((detail, idx) => (
-            <div key={idx} className={styles.cardBoxSmall}>
-              <label>Rating
-                <input
-                  type="number"
-                  name="rating"
-                  min="1"
-                  max="5"
-                  value={detail.rating}
-                  onChange={(e) => handleDetailChange(idx, e)}
-                />
-              </label>
+            <div key={idx} className={styles.cardBoxSmall} >
+             <label> Rating (0 to 5) *
+  <input
+    type="number"
+    name="rating"
+    min="0"
+    max="5"
+    value={detail.rating}
+    onChange={(e) => handleDetailChange(idx, e)}
+  />
+</label>
+
               <label>Note
                 <input
                   type="text"

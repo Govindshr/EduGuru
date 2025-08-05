@@ -96,23 +96,22 @@ const handleSubmit = async (e) => {
     formPayload.append("cover_image", formData.image);
   }
 
-  // prepare details JSON without image and image_preview
-  const detailsData = formData.details.map(({ image, image_preview, ...rest }, index) => {
-    if (!image && image_preview) {
-      // retain image path if no new file selected
-      rest.image = image_preview.replace(config.imageurl + "/", "");
-    }
-    return rest;
-  });
+  const detailMeta = formData.details.map(({ image, image_preview, ...rest }) => ({
+  ...rest,
+  image: rest.image || image_preview.replace(config.imageurl + "/", "")
+}));
 
-  formPayload.append("details", JSON.stringify(detailsData));
+    formPayload.append("details", JSON.stringify(detailMeta));
 
-  // only new files are appended as binary data
-  formData.details.forEach((d) => {
-    if (d.image) {
-      formPayload.append("details_image", d.image);
-    }
-  });
+     formData.details.forEach((d) => {
+  if (d.image instanceof File) {
+    formPayload.append("details_image", d.image);
+  } else {
+    formPayload.append("details_image", new Blob()); // placeholder to maintain index
+  }
+});
+
+
 
   try {
     const res = await axios.post(config.UpdateWhatWeAre, formPayload, {

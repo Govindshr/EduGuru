@@ -77,13 +77,20 @@ console.log("formdata description",formData.description)
     }
   };
 
-  const handleAreaImagesChange = (e) => {
-    const files = Array.from(e.target.files);
-    setFormData((prev) => ({
-      ...prev,
-      area_images: files,
-    }));
-  };
+const handleAreaImagesChange = (e) => {
+  const files = Array.from(e.target.files);
+
+  if (files.length !== 2) {
+    alert("Please select exactly 2 images using Ctrl or Shift while selecting.");
+    e.target.value = "";
+    return;
+  }
+
+  setFormData((prev) => ({
+    ...prev,
+    area_images: files,
+  }));
+};
 
 
   return (
@@ -156,9 +163,11 @@ console.log("formdata description",formData.description)
 
                
               
-                <label className={styles.fullWidth}>Area Images
-                  <input type="file" multiple onChange={handleAreaImagesChange} />
-                </label>
+               <label className={styles.fullWidth}>
+  Area Images <span style={{ color: "red", fontSize: "0.9rem", marginLeft: "10px" }}>(Select exactly 2 images using Ctrl/Shift)</span>
+  <input type="file" multiple onChange={handleAreaImagesChange} />
+</label>
+
 
         <button type="submit" className={`${styles.submitBtn} ${styles.fullWidth}`}>Submit</button>
       </form>

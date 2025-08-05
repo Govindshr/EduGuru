@@ -13,7 +13,7 @@ import MainBanner from "./admin/pages/MainBanner";
 import DesignSolution from "./admin/pages/DesignSolution";
 import SkillsSection from "./admin/pages/SkillsSection";
 import OurTeam from "./admin/pages/OurTeam";
-import Portfolio from "./admin/pages/OurPortfolio";
+import Portfolio from "./admin/pages/OurPortfolio"; 
 import Testimonials from "./admin/pages/Testimoinal";
 import GetStarted from "./admin/pages/GetStarted";
 import OurPartner from "./admin/pages/OurPartner";

@@ -7,7 +7,8 @@ import { config } from "../admin/services/config";
 
 gsap.registerPlugin(ScrollTrigger);
 
-function Footer({ ref }) {
+
+  const Footer = forwardRef((props, ref) => {
   const headingRef = useRef(null);
   const [captcha, setCaptcha] = useState({ question: "", answer: "" });
   const [captchaInput, setCaptchaInput] = useState("");
@@ -279,6 +280,6 @@ function Footer({ ref }) {
       </div>
     </footer>
   );
-}
+})
 
 export default Footer;

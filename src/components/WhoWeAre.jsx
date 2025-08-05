@@ -305,7 +305,7 @@ function WhoWeAre() {
                       <figure className="m-0">
                         <img src={`${config.imageurl}/${item?.image}`} alt="" />
                       </figure>
-                      <b>01</b>
+                      <b>{index +1}</b>
                       <span>{item?.texts}</span>
                     </div>
                   </li>

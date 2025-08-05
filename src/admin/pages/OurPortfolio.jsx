@@ -81,12 +81,20 @@ const Portfolio = () => {
     formPayload.append("title", formData.title);
     formPayload.append("heading", formData.heading);
 
-    const detailMeta = formData.details.map(({ image, image_preview, ...rest }) => rest);
+const detailMeta = formData.details.map(({ image, image_preview, ...rest }) => ({
+  ...rest,
+  image: rest.image || image_preview.replace(config.imageurl + "/", "")
+}));
+
     formPayload.append("details", JSON.stringify(detailMeta));
 
-    formData.details.forEach((d) => {
-      if (d.image) formPayload.append("details_image", d.image);
-    });
+     formData.details.forEach((d) => {
+  if (d.image instanceof File) {
+    formPayload.append("details_image", d.image);
+  } else {
+    formPayload.append("details_image", new Blob()); // placeholder to maintain index
+  }
+});
 
     try {
       const res = await axios.post(config.UpdateWhatWeAre, formPayload, {

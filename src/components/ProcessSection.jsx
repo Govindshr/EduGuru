@@ -5,7 +5,7 @@ import SplitType from "split-type";
 
 gsap.registerPlugin(ScrollTrigger);
 
-function ProcessSection() {
+function  ProcessSection() {
   const headingRef = useRef(null);
   const steps = [
    {

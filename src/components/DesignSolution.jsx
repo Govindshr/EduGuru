@@ -104,8 +104,11 @@ function DesignSolution( {ref}) {
                     </i>
                   </figure>
                   {/* <h3>{item.name} </h3> */}
-                  <a href="">
+                  <a href="" >
+                  
+
                     {item.heading}
+               
                     <img src="/images/arrow-gray.svg" alt="" />
                   </a>
                 </div>

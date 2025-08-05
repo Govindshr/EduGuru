@@ -168,38 +168,64 @@ console.log(data)
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const formPayload = new FormData();
-    formPayload.append("section_name", formData.section_name);
-    formPayload.append("title", formData.title);
-    formPayload.append("heading", formData.heading);
-    formPayload.append("main_description", formData.main_description);
-    if (formData.image) formPayload.append("cover_image", formData.image);
-    if (formData.why_you_need.image) formPayload.append("image", formData.why_you_need.image);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const formPayload = new FormData();
 
-    formPayload.append("corporate_identity", JSON.stringify(formData.corporate_identity));
-    formPayload.append("why_you_need", JSON.stringify({
+  formPayload.append("section_name", formData.section_name);
+  formPayload.append("title", formData.title);
+  formPayload.append("heading", formData.heading);
+  formPayload.append("main_description", formData.main_description);
+
+  if (formData.image instanceof File) {
+    formPayload.append("cover_image", formData.image);
+  } else if (formData.cover_image) {
+    formPayload.append("cover_image", formData.cover_image);
+  }
+
+  if (formData.why_you_need.image instanceof File) {
+    formPayload.append("image", formData.why_you_need.image);
+  } else if (formData.why_you_need.image) {
+    formPayload.append("image", formData.why_you_need.image);
+  }
+
+  formPayload.append(
+    "corporate_identity",
+    JSON.stringify(formData.corporate_identity)
+  );
+
+  formPayload.append(
+    "why_you_need",
+    JSON.stringify({
       ...formData.why_you_need,
       image: undefined,
-      image_preview: undefined
-    }));
-    formPayload.append("outsourcing", JSON.stringify(formData.outsourcing));
+      image_preview: undefined,
+    })
+  );
 
-    formData.outsourcing.details.forEach((item) => {
-      if (item.image) formPayload.append("details_image", item.image);
-    });
+  formPayload.append("outsourcing", JSON.stringify(formData.outsourcing));
 
-    try {
-      const res = await axios.post(config.SaveOrUpdateWhoWeAre, formPayload, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      alert(res.data.message);
-    } catch (err) {
-      console.error("Error saving section:", err);
-      alert("Failed to save section");
+  const imageIndexMap = [];
+  formData.outsourcing.details.forEach((item, index) => {
+    if (item.image instanceof File) {
+      formPayload.append("details_image", item.image);
+      imageIndexMap.push(index);
     }
-  };
+  });
+
+  formPayload.append("details_image_index_map", JSON.stringify(imageIndexMap));
+
+  try {
+    const res = await axios.post(config.SaveOrUpdateWhoWeAre, formPayload, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    alert(res.data.message);
+  } catch (err) {
+    console.error("Error saving section:", err);
+    alert("Failed to save section");
+  }
+};
+
   const handleOutsourcingChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({

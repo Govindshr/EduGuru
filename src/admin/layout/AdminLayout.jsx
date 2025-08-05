@@ -44,7 +44,7 @@ const AdminLayout = () => {
 
           <div className={styles.menuGroup}>Contact Us </div>
           <ul>
-            <NavLink to="contact-us" className={({ isActive }) => (isActive ? styles.active : "")}><li>Conteact Us Section</li></NavLink>
+            <NavLink to="contact-us" className={({ isActive }) => (isActive ? styles.active : "")}><li>Contact Us Section</li></NavLink>
             <NavLink to="queries" className={({ isActive }) => (isActive ? styles.active : "")}><li>Queries</li></NavLink>
             <li onClick={handleLogout} style={{ cursor: 'pointer', color: 'red' }}>Log out</li>
           </ul>

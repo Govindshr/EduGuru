@@ -38,7 +38,7 @@ function LandingPage() {
       <Skills />
       <Team />
       <Portfolio />
-      <Testimonials />
+      <Testimonials />  
       <GetStarted />
       <Clients  ref={footerRef} />
       <Footer />

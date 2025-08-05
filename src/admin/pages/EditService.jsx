@@ -111,14 +111,28 @@ const handleAreaDescriptionChange = (value) => {
     }
   };
 
-  const handleAreaImagesChange = (e) => {
-    const files = Array.from(e.target.files);
-    setFormData((prev) => ({
-      ...prev,
-      area_images: files,
-    }));
-    setPreviewAreaImages([]);
-  };
+ const handleAreaImagesChange = (e) => {
+  const files = Array.from(e.target.files);
+
+  if (files.length > 2) {
+    alert("Please select only up to 2 images using Ctrl or Shift while selecting.");
+    e.target.value = ""; // Clear the selection
+    return;
+  }
+
+  if (files.length < 2) {
+    alert("Please select at least 2 images.");
+    e.target.value = "";
+    return;
+  }
+
+  setFormData((prev) => ({
+    ...prev,
+    area_images: files,
+  }));
+  setPreviewAreaImages([]);
+};
+
 
   return (
     <div className={styles.formWrapper}>
@@ -199,9 +213,9 @@ const handleAreaDescriptionChange = (value) => {
           <input type="text" name="area_text" value={formData.area_text} onChange={handleChange} />
         </label>
 
-        <label className={styles.fullWidth}>
-          Area Images
-          <input type="file" multiple onChange={handleAreaImagesChange} />
+       <label className={styles.fullWidth}>
+  Area Images <span style={{ color: "red", fontSize: "0.9rem", marginLeft: "10px" }}>(Select exactly 2 images using Ctrl/Shift)</span>
+  <input type="file" multiple onChange={handleAreaImagesChange} />
           {previewAreaImages.length > 0 && (
             <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
               {previewAreaImages.map((img, i) => (
