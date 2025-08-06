@@ -88,7 +88,7 @@ function  ProcessSection() {
   }, []);
 
   return (
-    <section className="processSection">
+    <section className="processSection mb-0">
       <div className="container">
         <div className="section-heading pb-4">
           <h2 ref={headingRef} className="text-white split-text mb-2">Process</h2>
