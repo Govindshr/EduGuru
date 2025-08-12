@@ -80,7 +80,7 @@ function Testimonials() {
 
 
   return (
-    <section className="testimonialSection">
+    <section className="testimonialSection bgCls">
       <div className="container">
         <div className="section-heading pb-4">
           <span>{formData?.title}</span>
